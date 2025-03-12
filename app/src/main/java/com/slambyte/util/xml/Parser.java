@@ -89,7 +89,7 @@ public class Parser	{
 				doc.gradients.clear();
 			}
 
-			if(doc.gradients.size() > 0)	{
+			if(doc.gradients.size() > 0 && "svg".equals(el.getName()))	{
 				// doc.unlinkGradients();
 
 				el.addNsAttribute("xmlns","xlink","http://www.w3.org/1999/xlink");
