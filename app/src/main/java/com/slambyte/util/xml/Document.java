@@ -376,14 +376,14 @@ public class Document	{
 				// 				element.getChildren().remove(innerChild);
 				// 			}
 
-							if(child.hasNsAttribute("android","pathData"))	{
-							// System.out.println(innerChild.getName());
-								var attr = child.getNsAttribute("android","pathData");
-								var tmpValue = attr.getValue()+ " "+ innerChild.getNsAttribute("android","pathData").getValue();
-								attr.setValue(tmpValue);
-								indexes_to_remove.add(index);
-							}
-						}
+				// 			if(child.hasNsAttribute("android","pathData"))	{
+				// 			// System.out.println(innerChild.getName());
+				// 				var attr = child.getNsAttribute("android","pathData");
+				// 				var tmpValue = attr.getValue()+ " "+ innerChild.getNsAttribute("android","pathData").getValue();
+				// 				attr.setValue(tmpValue);
+				// 				indexes_to_remove.add(index);
+				// 			}
+				// 		}
 					}
 				}
 			}
