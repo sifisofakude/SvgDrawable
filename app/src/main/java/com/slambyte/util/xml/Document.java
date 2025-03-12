@@ -361,6 +361,8 @@ public class Document	{
 
 				if(indexes_to_remove.contains(index)) continue;
 
+				System.out.println(index);
+
 				// for(Element innerChild : element.getChildren())	{
 				// 	if("path".equals(name) && "path".equals(innerChild.getName()))	{
 				// 		if(child == innerChild) continue;
