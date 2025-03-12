@@ -381,7 +381,7 @@ public class Document	{
 								// var attr = child.getNsAttribute("android","pathData");
 								// var tmpValue = attr.getValue()+ " "+ innerChild.getNsAttribute("android","pathData").getValue();
 								// attr.setValue(tmpValue);
-								// indexes_to_remove.add(index);
+								indexes_to_remove.add(index);
 							}
 						}
 					}
