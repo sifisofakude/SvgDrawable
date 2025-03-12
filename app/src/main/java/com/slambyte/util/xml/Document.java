@@ -387,11 +387,12 @@ public class Document	{
 									continue;
 								}
 							// System.out.println(innerChild.getName());
-								// var attr = child.getNsAttribute("android","pathData");
-								// var tmpValue = attr.getValue()+ " "+ innerChild.getNsAttribute("android","pathData").getValue();
-								// attr.setValue(tmpValue);
+								var attr = child.getNsAttribute("android","pathData");
+								var tmpValue = attr.getValue()+ " "+ innerChild.getNsAttribute("android","pathData").getValue();
+								attr.setValue(tmpValue);
+								
 								indexes_to_remove.add(index);
-							System.out.println(indexes_to_remove.toString());
+							// System.out.println(indexes_to_remove.toString());
 							}
 						}
 					}
