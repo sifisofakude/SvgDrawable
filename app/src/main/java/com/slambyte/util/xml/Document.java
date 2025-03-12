@@ -360,7 +360,6 @@ public class Document	{
 				int index = element.getChildren().indexOf(child);
 
 				if(indexes_to_remove.indexOf(index) > -1)	{
-					System.out.println("fuck it");
 					continue;
 				}
 
@@ -383,6 +382,10 @@ public class Document	{
 				// // 			}
 
 							if(child.hasNsAttribute("android","pathData"))	{
+
+								if(indexes_to_remove.indexOf(index) > -1)	{
+									continue;
+								}
 							// System.out.println(innerChild.getName());
 								// var attr = child.getNsAttribute("android","pathData");
 								// var tmpValue = attr.getValue()+ " "+ innerChild.getNsAttribute("android","pathData").getValue();
