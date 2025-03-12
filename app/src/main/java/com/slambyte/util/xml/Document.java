@@ -348,12 +348,18 @@ public class Document	{
 	public void cleanDuplicates(Element element)	{
 		if(element.hasChildren())	{
 			Element prevChild = null;
+			ArrayList<Integer> indexes_to_remove = new ArrayList<Integer>();
+
 			for(Element child : element.getChildren())	{
 				var name = child.getName();
 				if("g".equals(name) || "group".equals(name))	{
 					cleanDuplicates(child);
 					continue;
 				}
+
+				int index = element.getChildren().indexOf(child);
+
+				if(indexes_to_remove.contains(index)) continue;
 
 				for(Element innerChild : element.getChildren())	{
 					if("path".equals(name) && "path".equals(innerChild.getName()))	{
