@@ -345,7 +345,7 @@ public class Document	{
 		return isDuplicate;
 	}
 
-	public void checkForDuplicates(Element element)	{
+	public void cleanDuplicates(Element element)	{
 		if(element.hasChildren())	{
 			Element prevChild = null;
 			for(Element child : element.getChildren())	{
@@ -379,6 +379,10 @@ public class Document	{
 				}
 			}
 		}
+	}
+
+	public void saveGradients(Element element)	{
+		
 	}
 
 	private Element getGradient(Element elem)	{
