@@ -387,7 +387,7 @@ public class Document	{
 								// var tmpValue = attr.getValue()+ " "+ innerChild.getNsAttribute("android","pathData").getValue();
 								// attr.setValue(tmpValue);
 								indexes_to_remove.add(index);
-							System.out.println(indexes_to_remove.size());
+							System.out.println(indexes_to_remove.toString());
 							}
 						}
 					}
