@@ -359,6 +359,10 @@ public class Document	{
 
 				int index = element.getChildren().indexOf(child);
 
+				if(indexes_to_remove.indexOf(index) > -1)	{
+					System.out.println("fuck it");
+					continue;
+				}
 
 
 				for(Element innerChild : element.getChildren())	{
@@ -369,10 +373,6 @@ public class Document	{
 							continue;
 						}
 
-						if(indexes_to_remove.indexOf(index) > -1)	{
-							System.out.println("fuck it");
-							continue;
-						}
 						if(child.equals(innerChild,Element.ATTRIBUTE_TYPE,"d") || child.equals(innerChild,Element.NS_ATTRIBUTE_TYPE,"pathData"))	{
 				// // 			if(child.hasAttribute("d"))	{
 				// // 				var attr = child.getAttribute("d");
