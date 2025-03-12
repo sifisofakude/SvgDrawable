@@ -32,7 +32,7 @@ public class Parser	{
 		}
 	}
 	
-	public void parseFile(String input,String output)	{
+	public void parseFile(String input,String output,ArrayList<String> options)	{
 		if(input == null || input.isEmpty()) return;
 
 		String extension = input.substring(input.length()-3);
@@ -68,6 +68,10 @@ public class Parser	{
 				// System.out.println(parent.getName() + " " + el.getName());
 				if(el.getName().equals(parent.getName())) break;
 				el = parent;
+			}
+
+			if(options != null && options.size() > 0)	{
+				doc.gradientsLinked = false;
 			}
 
 			if(doc.gradientsLinked)	{
