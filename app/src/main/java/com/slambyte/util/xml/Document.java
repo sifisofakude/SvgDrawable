@@ -360,7 +360,6 @@ public class Document	{
 						if(child == innerChild) continue;
 
 						if(child.equals(innerChild,Element.ATTRIBUTE_TYPE,"d") || child.equals(innerChild,Element.NS_ATTRIBUTE_TYPE,"pathData"))	{
-							System.out.println(innerChild.getName());
 							if(child.hasAttribute("d"))	{
 								var attr = child.getAttribute("d");
 								var tmpValue = attr.getValue()+ " "+ innerChild.getAttribute("d").getValue();
@@ -369,11 +368,12 @@ public class Document	{
 								element.getChildren().remove(innerChild);
 							}
 
-							// if(child.hasNsAttribute("android","pathData"))	{
-							// 	var attr = child.getNsAttribute("android","pathData");
-							// 	var tmpValue = attr.getValue()+ " "+ innerChild.getNsAttribute("android","pathData").getValue();
-							// 	attr.setValue(tmpValue);
-							// }
+							if(child.hasNsAttribute("android","pathData"))	{
+							System.out.println(innerChild.getName());
+								var attr = child.getNsAttribute("android","pathData");
+								var tmpValue = attr.getValue()+ " "+ innerChild.getNsAttribute("android","pathData").getValue();
+								attr.setValue(tmpValue);
+							}
 						}
 					}
 				}
