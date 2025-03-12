@@ -363,8 +363,8 @@ public class Document	{
 
 
 				for(Element innerChild : element.getChildren())	{
-				System.out.println(index);
-				// 	if("path".equals(name) && "path".equals(innerChild.getName()))	{
+				// System.out.println(index);
+					if("path".equals(name) && "path".equals(innerChild.getName()))	{
 				// 		if(child == innerChild) continue;
 
 				// 		if(child.equals(innerChild,Element.ATTRIBUTE_TYPE,"d") || child.equals(innerChild,Element.NS_ATTRIBUTE_TYPE,"pathData"))	{
@@ -376,15 +376,15 @@ public class Document	{
 				// 				element.getChildren().remove(innerChild);
 				// 			}
 
-				// 			if(child.hasNsAttribute("android","pathData"))	{
-				// 			// System.out.println(innerChild.getName());
-				// 				var attr = child.getNsAttribute("android","pathData");
-				// 				var tmpValue = attr.getValue()+ " "+ innerChild.getNsAttribute("android","pathData").getValue();
-				// 				attr.setValue(tmpValue);
-				// 				indexes_to_remove.add(index);
-				// 			}
-				// 		}
-				// 	}
+							if(child.hasNsAttribute("android","pathData"))	{
+							// System.out.println(innerChild.getName());
+								var attr = child.getNsAttribute("android","pathData");
+								var tmpValue = attr.getValue()+ " "+ innerChild.getNsAttribute("android","pathData").getValue();
+								attr.setValue(tmpValue);
+								indexes_to_remove.add(index);
+							}
+						}
+					}
 				}
 			}
 		}
