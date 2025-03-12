@@ -85,13 +85,10 @@ public class Parser	{
 				doc.populateAapts();
 				NsAttribute attr = new NsAttribute("xmlns","aapt","http://schemas.android.com/aapt");
 				el.getNsAttributes().add(1,attr);
-				// el.addNsAttribute("xmlns","aapt","");
 				doc.gradients.clear();
 			}
 
 			if(doc.gradients.size() > 0 && "svg".equals(el.getName()))	{
-				// doc.unlinkGradients();
-
 				el.addNsAttribute("xmlns","xlink","http://www.w3.org/1999/xlink");
 				Element tmpElement = new Element("defs");
 				tmpElement.addAttribute("id","defs1");

@@ -359,11 +359,11 @@ public class Document	{
 					if("path".equals(name) && "path".equals(innerChild.getName()))	{
 						if(child == innerChild) continue;
 
+							System.out.println(innerChild.getName());
 						if(child.equals(innerChild,Element.ATTRIBUTE_TYPE,"d") || child.equals(innerChild,Element.NS_ATTRIBUTE_TYPE,"pathData"))	{
 							if(child.hasAttribute("d"))	{
 								var attr = child.getAttribute("d");
 								var tmpValue = attr.getValue()+ " "+ innerChild.getAttribute("d").getValue();
-							System.out.println(tmpValue);
 								// attr.setValue(tmpValue);
 								child.addAttribute("d",tmpValue);
 								element.getChildren().remove(innerChild);
