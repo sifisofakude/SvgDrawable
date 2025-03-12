@@ -107,8 +107,8 @@ public class Parser	{
 		}catch(IOException e)	{}
 	}
 	
-	public void parseFile(String input,int process)	{
-		if(input == null || input.isEmpty()) return;
+	public void parseFile(String input/*,int process*/)	{
+		if(input == null || input.replaceAll("\\s\\|\\t\\","").isEmpty()) return;
 
 		if(process == Parser.CONVERTING_TO_DRAWABLE)	{
 			currentProcess = Parser.CONVERTING_TO_DRAWABLE;
