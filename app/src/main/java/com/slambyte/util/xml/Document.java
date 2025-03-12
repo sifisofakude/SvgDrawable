@@ -351,7 +351,7 @@ public class Document	{
 			for(Element child : element.getChildren())	{
 				var name = child.getName();
 				if("g".equals(name) || "group".equals(name))	{
-					checkForDuplicates(child);
+					cleanDuplicates(child);
 					continue;
 				}
 
@@ -382,7 +382,7 @@ public class Document	{
 	}
 
 	public void saveGradients(Element element)	{
-		
+
 	}
 
 	private Element getGradient(Element elem)	{
