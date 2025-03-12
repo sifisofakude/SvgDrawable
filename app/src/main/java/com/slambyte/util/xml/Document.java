@@ -390,7 +390,9 @@ public class Document	{
 								var attr = child.getNsAttribute("android","pathData");
 								var tmpValue = attr.getValue()+ " "+ innerChild.getNsAttribute("android","pathData").getValue();
 								attr.setValue(tmpValue);
-								
+
+								System.out.println(tmpValue);
+
 								indexes_to_remove.add(index);
 							// System.out.println(indexes_to_remove.toString());
 							}
