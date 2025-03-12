@@ -361,9 +361,9 @@ public class Document	{
 
 				if(indexes_to_remove.contains(index)) continue;
 
-				System.out.println(index);
 
-				// for(Element innerChild : element.getChildren())	{
+				for(Element innerChild : element.getChildren())	{
+				System.out.println(index);
 				// 	if("path".equals(name) && "path".equals(innerChild.getName()))	{
 				// 		if(child == innerChild) continue;
 
@@ -385,7 +385,7 @@ public class Document	{
 				// 			}
 				// 		}
 				// 	}
-				// }
+				}
 			}
 		}
 	}
