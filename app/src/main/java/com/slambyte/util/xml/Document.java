@@ -359,7 +359,9 @@ public class Document	{
 
 				int index = element.getChildren().indexOf(child);
 
-				if(indexes_to_remove.contains(index)) continue;
+				if(indexes_to_remove.contains(index))	{
+					System.out.println("fuck it");
+				}
 
 
 				for(Element innerChild : element.getChildren())	{
