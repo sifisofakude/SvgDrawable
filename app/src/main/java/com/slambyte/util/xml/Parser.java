@@ -70,8 +70,15 @@ public class Parser	{
 				el = parent;
 			}
 
-			if(options != null && options.size() > 0)	{
+			if(options != null && options.size() > 0 && "vector".equals(el.getName()))	{
 				doc.gradientsLinked = false;
+
+				for(String option : options)	{
+					switch(option)	{
+					case "--clean-duplicates"-> doc.cleanDuplicates(el);
+					case "--external-gradients"-> doc.saveGradients(el);
+					}
+				}
 			}
 
 			if(doc.gradientsLinked)	{
