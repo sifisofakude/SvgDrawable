@@ -389,7 +389,8 @@ public class Document	{
 							// System.out.println(innerChild.getName());
 								var attr = child.getNsAttribute("android","pathData");
 								var tmpValue = attr.getValue()+ " "+ innerChild.getNsAttribute("android","pathData").getValue();
-								attr.setValue(tmpValue);
+								// attr.setValue(tmpValue);
+								child.addNsAttribute("android","pathData",tmpValue);
 
 								System.out.println(tmpValue);
 
