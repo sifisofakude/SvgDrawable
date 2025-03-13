@@ -73,6 +73,8 @@ public class Parser	{
 			if(options != null && options.size() > 0 && "vector".equals(el.getName()))	{
 				doc.gradientsLinked = false;
 
+				String file = new File(input).getPath();
+				System.out.println(file);
 				for(String option : options)	{
 					switch(option)	{
 					case "--clean-duplicates"-> doc.cleanDuplicates(el);
