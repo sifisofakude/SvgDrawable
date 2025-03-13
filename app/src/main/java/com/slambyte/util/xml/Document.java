@@ -409,7 +409,7 @@ public class Document	{
 		if(element.getInlineNsAttributes().size() > 0)	{
 			String attrs = "";
 			for(InlineNsAttribute attr : element.getInlineNsAttributes())	{
-				attrs += String.format("%s:%s=\"%s\" ",attr.getNs(),attr.getName(),attr.getValue());
+				attrs += String.format("%s:%s=\"%s\"",attr.getNs(),attr.getName(),attr.getValue());
 			}
 			attrs.trim();
 			System.out.print(" "+attrs);
