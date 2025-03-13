@@ -81,7 +81,7 @@ public class Parser	{
 				for(String option : options)	{
 					switch(option)	{
 					case "--clean-duplicates"-> doc.cleanDuplicates(el);
-					case "--external-gradients"-> doc.saveGradients(el,file.toString());
+					case "--external-gradients"-> doc.saveGradients(el,file.getParent().toString());
 					}
 				}
 			}
