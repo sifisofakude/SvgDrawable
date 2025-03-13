@@ -108,6 +108,10 @@ public class Parser	{
 			doc.printFormatted(el,0);
 			// doc.toString(el,0);
 			// System.out.println(doc.docStr);
+			if(options.indexOf("--external-gradients") > -1)	{
+				Path path = new File(output).toPath();
+				output = path.getParent().toString()+"/res/drawable/"+path.getFilename();
+			}
 			doc.writeToFile(output);
 		}catch(IOException e)	{}
 	}
