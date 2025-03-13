@@ -109,10 +109,10 @@ public class Parser	{
 			// doc.toString(el,0);
 			// System.out.println(doc.docStr);
 			if(options.contains("--external-gradients"))	{
-				Path path = new File(output).toPath();
+				Path path = new File(input).toPath();
 				Path parent = path.getParent();
 				new File((parent != null ? parent.toString()+"/":"")+"res/drawable").mkdirs();
-				
+
 				output = (parent != null ? parent.toString()+"/":"")+"res/drawable/"+path.getFileName();
 				// System.out.println(output);
 			}
