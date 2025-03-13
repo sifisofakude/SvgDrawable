@@ -375,7 +375,7 @@ public class Document	{
 				shape.addInlineNsAttribute("xmlns","android","http://schemas.android.com/apk/res/android");
 				shape.addChild(grad);
 
-				new File(path+"/res/drawable/").mkdirs()
+				new File(path+"/res/drawable/").mkdirs();
 				try {
 					writtingToFile(new PrintStream(path+"/res/drawable/"+id),shape,0);
 				}catch(Exception e)	{
