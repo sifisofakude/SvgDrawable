@@ -374,7 +374,7 @@ public class Document	{
 				Element shape = new Element("shape");
 				shape.addInlineNsAttribute("xmlns","android","http://schemas.android.com/apk/res/android");
 				shape.addChild(grad);
-				writeToFile(id+".xml");
+				writtingToFile(shape,new PrintStream(id+".xml"),0);
 				// printFormatted(shape,0);
 			}
 		}
