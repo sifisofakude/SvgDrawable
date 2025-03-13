@@ -367,7 +367,9 @@ public class Document	{
 	}
 
 	public void saveGradients(Element element)	{
-
+		for(Element grad : gradients)	{
+			printFormatted(grad,0);
+		}
 	}
 
 	private Element getGradient(Element elem)	{
