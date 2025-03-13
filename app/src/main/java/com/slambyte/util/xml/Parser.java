@@ -113,6 +113,7 @@ public class Parser	{
 				Path parent = path.getParent();
 				output = (parent != null ? parent.toString()+"/":"")+"res/drawable/"+path.getFileName();
 				System.out.println(output);
+				new File(output).mkdirs();
 			}
 			doc.writeToFile(output);
 		}catch(IOException e)	{}
