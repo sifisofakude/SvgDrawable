@@ -111,7 +111,7 @@ public class Parser	{
 			if(options.contains("--external-gradients"))	{
 				Path path = new File(output).toPath();
 				Path parent = path.getParent();
-				output = (parent != null ? parent.toString():"")+"/res/drawable/"+path.getFileName();
+				output = (parent == null ? parent.toString():"")+"/res/drawable/"+path.getFileName();
 				// System.out.println(output);
 			}
 			doc.writeToFile(output);
