@@ -431,7 +431,7 @@ public class AttributeFromString	{
 
 						doc.aapts.add(tmpElement);
 						element.addChild(tmpElement);
-						System.out.println(element.getName());
+						// System.out.println(element.getName());
 					}
 				}
 
