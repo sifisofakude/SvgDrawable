@@ -376,7 +376,7 @@ public class Document	{
 				shape.addChild(grad);
 				try {
 					writtingToFile(new PrintStream(id),shape,0);
-				}catch(FileNotFoundException e)	{}
+				}catch(Exception e)	{}
 				// printFormatted(shape,0);
 			}
 		}
