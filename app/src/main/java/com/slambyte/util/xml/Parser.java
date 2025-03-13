@@ -107,7 +107,7 @@ public class Parser	{
 		}catch(IOException e)	{}
 	}
 	
-	public void parseFile(String input/*,int process*/)	{
+	public void parseFile(String input,int process)	{
 		if(input == null || input.replaceAll("\\s\\|\\t\\","").isEmpty()) return;
 
 		if(process == Parser.CONVERTING_TO_DRAWABLE)	{
@@ -163,7 +163,6 @@ public class Parser	{
 		if(height == null || height.isEmpty()) return;
 		
 		Element element = new Element("svg");
-		element.addNsAttribute("xmlns","svg","http://www.w3.org/2000/svg");
 		element.addAttribute("xmlns","http://www.w3.org/2000/svg");
 		element.addAttribute("width",width);
 		element.addAttribute("height",height);
