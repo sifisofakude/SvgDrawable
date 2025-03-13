@@ -413,16 +413,16 @@ public class Document	{
 				attrs += String.format(" %s:%s=\"%s\"",attr.getNs(),attr.getName(),attr.getValue());
 			attrs.trim();
 			}
-			System.out.print(" "+attrs);
+			System.out.print(attrs);
 		}
 
 		if(element.getInlineAttributes().size() > 0)	{
 			String attrs = "";
 			for(InlineAttribute attr : element.getInlineAttributes())	{
-				attrs += String.format("%s=\"%s\" ",attr.getName(),attr.getValue());
-			}
+				attrs += String.format(" %s=\"%s\"",attr.getName(),attr.getValue());
 			attrs.trim();
-			System.out.print(" "+attrs);
+			}
+			System.out.print(attrs);
 		}
 
 		if(element.getNsAttributes().size() > 0)	{
