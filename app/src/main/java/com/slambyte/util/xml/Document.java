@@ -369,7 +369,12 @@ public class Document	{
 	public void saveGradients(Element element)	{
 		if(gradients.size() > 0)	{
 			for(Element grad : gradients)	{
-				printFormatted(grad,0);
+				String id = grad.getNsAttribute("android","name").getValue();
+
+				Element shape = new Element("shape");
+				shape.addInlineNsAttribute("xmlns","android","http://schemas.android.com/apk/res/android");
+				shape.addChild(grad);
+				printFormatted(shape,0);
 			}
 		}
 		if(element.hasChildren())	{
