@@ -77,11 +77,11 @@ public class Parser	{
 				doc.gradientsLinked = false;
 
 				Path file = new File(input).toPath();
-				System.out.println(file.getParent().toString());
+				// System.out.println(file.getParent().toString());
 				for(String option : options)	{
 					switch(option)	{
 					case "--clean-duplicates"-> doc.cleanDuplicates(el);
-					case "--external-gradients"-> doc.saveGradients(el);
+					case "--external-gradients"-> doc.saveGradients(el,file.toString());
 					}
 				}
 			}

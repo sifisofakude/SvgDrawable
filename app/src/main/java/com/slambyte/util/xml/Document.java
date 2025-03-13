@@ -366,7 +366,7 @@ public class Document	{
 		}
 	}
 
-	public void saveGradients(Element element)	{
+	public void saveGradients(Element element,String path)	{
 		if(gradients.size() > 0)	{
 			for(Element grad : gradients)	{
 				String id = grad.getNsAttribute("android","name").getValue()+".xml";
@@ -375,7 +375,7 @@ public class Document	{
 				shape.addInlineNsAttribute("xmlns","android","http://schemas.android.com/apk/res/android");
 				shape.addChild(grad);
 				try {
-					writtingToFile(new PrintStream(id),shape,0);
+					writtingToFile(new PrintStream(path+"/res/drawable/"+id),shape,0);
 				}catch(Exception e)	{}
 				// printFormatted(shape,0);
 			}
