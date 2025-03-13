@@ -367,8 +367,12 @@ public class Document	{
 	}
 
 	public void saveGradients(Element element)	{
-		for(Element grad : gradients)	{
-			printFormatted(grad,0);
+		System.out.println("wow");
+		if(element.hasChildren())	{
+			for(Element child : gradients)	{
+				printFormatted(grad,0);
+			}
+
 		}
 	}
 
