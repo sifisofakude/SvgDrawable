@@ -8,6 +8,8 @@ import java.io.BufferedReader;
 import java.io.LineNumberReader;
 import java.io.InputStreamReader;
 
+import java.nio.fuile.Path;
+
 import java.util.ArrayList;
 
 public class Parser	{
@@ -74,8 +76,8 @@ public class Parser	{
 			if(options != null && options.size() > 0 && "vector".equals(el.getName()))	{
 				doc.gradientsLinked = false;
 
-				String file = new File(input).getPath();
-				System.out.println(file);
+				Path file = new File(input).toPath();
+				System.out.println(file.getParent().toString());
 				for(String option : options)	{
 					switch(option)	{
 					case "--clean-duplicates"-> doc.cleanDuplicates(el);
