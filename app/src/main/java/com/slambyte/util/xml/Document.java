@@ -306,12 +306,15 @@ public class Document	{
 				tmpParent.addChildren(tmpGrad.getChildren());
 
 				tmpGrad.getChildren().clear();
-				if(!isElementDuplicate(tmpGrads,tmpParent,Element.ATTRIBUTE_TYPE,"id"))	{
+
+				List<String> string = new ArrayList<String>() { add("id"); };
+				List<Integer> exclude = new ArrayList<Integer>() { add(Element.ATTRIBUTE_TYPE); };
+				if(!isElementDuplicate(tmpGrads,tmpParent,exclude,string))	{
 					tmpGrad.addNsAttribute("xlink","href","#"+ id);
 					tmpGrads.add(tmpParent);
 				}else {
 					for(var tmp : tmpGrads)	{
-						if(tmp.equals(tmpParent,Element.ATTRIBUTE_TYPE,"id"))	{
+						if(tmp.equals(tmpParent,exclude,string))	{
 							tmpGrad.addNsAttribute("xlink","href","#"+ tmp.getAttribute("id").getValue());
 							break;
 						}
@@ -335,7 +338,7 @@ public class Document	{
 		return isDuplicate;
 	}
 
-	private boolean isElementDuplicate(ArrayList<Element> grads,Element elem,int exclude,String string)	{
+	private boolean isElementDuplicate(ArrayList<Element> grads,Element elem,List<Integer> exclude,List<String> string)	{
 		boolean isDuplicate = false;
 		for(Element grad : grads)	{
 			if(grad.equals(elem,exclude,string))	{
@@ -348,20 +351,26 @@ public class Document	{
 
 	public void cleanDuplicates(Element element)	{
 		if(element.hasChildren())	{
-			Element prevChild = null;
-			ArrayList<Integer> indexes_to_remove = new ArrayList<Integer>();
+			ArrayList<Element> children = element.getChildren();
+			for(int i = 0; i < children.size(); i ++)	{
+				Element child = children.get(i);
+				for(int j = i+1; j < children.size(); j ++)	{
+					Element tmpChild = children.get(j);
+					if(tmpChild.hasNsAttribute("android","pathData"))	{
+						List<String> string = new ArrayList<String>() {
+							add("name");
+							add("pathData");
+						};
 
-			for(Element child : element.getChildren())	{
-				var name = child.getName();
-				if("g".equals(name) || "group".equals(name))	{
-					cleanDuplicates(child);
-					continue;
-				}
+						List<Integer> exclude = new ArrayList<Integer>() {
+							add(Element.NS_ATTRIBUTE_TYPE);
+							add(Element.NS_ATTRIBUTE_TYPE);
+						};
 
-				int index = element.getChildren().indexOf(child);
-
-				if(indexes_to_remove.indexOf(index) > -1)	{
-					continue;
+						if(child.equals(tmpChild,exclude,string))	{
+							
+						}
+					}
 				}
 			}
 		}

@@ -269,7 +269,7 @@ public class Element implements Cloneable	{
 		return result;
 	}
 
-	public boolean equals(Element element,int exclude,String string)	{
+	public boolean equals(Element element,List<Integer> exclude,List<String> string)	{
 		boolean result = super.equals(element);
 
 		boolean nameBool = false;
@@ -281,8 +281,9 @@ public class Element implements Cloneable	{
 		boolean inlineAttr = false;
 		if(inlineAttributes.size() == element.getInlineAttributes().size()) inlineAttr = true;
 		for(InlineAttribute attr : inlineAttributes)	{
-			if(exclude == Element.INLINE_ATTRIBUTE_TYPE)	{
-				if(string.equals(attr.getName())) continue;
+			int index = exclude.indexOf(Element.INLINE_ATTRIBUTE_TYPE);
+			if(index > -1)	{
+				if(string.get(index).equals(attr.getName())) continue;
 			}
 
 			InlineAttribute inAttr = element.getInlineAttribute(attr.getName());
@@ -304,9 +305,9 @@ public class Element implements Cloneable	{
 		if(inlineNsAttributes.size() == element.getInlineNsAttributes().size()) inlineNsAttr = true;
 
 		for(InlineNsAttribute attr : inlineNsAttributes)	{
-			// if("name".equals(attr.getName())) continue;
-			if(exclude == Element.INLINE_NS_ATTRIBUTE_TYPE)	{
-				if(string.equals(attr.getName())) continue;
+			int index = exclude.indexOf(Element.INLINE_NS_ATTRIBUTE_TYPE);
+			if(index > -1)	{
+				if(string.get(index).equals(attr.getName())) continue;
 			}
 
 			InlineNsAttribute inAttr = element.getInlineNsAttribute(attr.getNs(),attr.getName());
@@ -333,8 +334,9 @@ public class Element implements Cloneable	{
 			var attr = attributes.get(i);
 			var inAttr = element.getAttributes().get(i);
 
-			if(exclude == Element.ATTRIBUTE_TYPE)	{
-				if(string.equals(attr.getName())) continue;
+			int index = exclude.indexOf(Element.ATTRIBUTE_TYPE);
+			if(index > -1)	{
+				if(string.get(index).equals(attr.getName())) continue;
 			}
 
 			attrsBool = attr.getName().equals(inAttr.getName());
@@ -356,8 +358,9 @@ public class Element implements Cloneable	{
 			var attr = nsAttributes.get(i);
 			var inAttr = element.getNsAttributes().get(i);
 
-			if(exclude == Element.NS_ATTRIBUTE_TYPE)	{
-				if(string.equals(attr.getName())) continue;
+			int index = exclude.indexOf(Element.NS_ATTRIBUTE_TYPE);
+			if(index > -1)	{
+				if(string.get(index).equals(attr.getName())) continue;
 			}
 
 			nsAttrsBool = attr.getName().equals(inAttr.getName());
