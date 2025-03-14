@@ -1,5 +1,6 @@
 package com.slambyte.util.xml;
 
+import java.util.Iterator;
 import java.util.ArrayList;
 
 public class AttributeFromString	{
