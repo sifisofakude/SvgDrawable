@@ -105,7 +105,7 @@ public class Parser	{
 			}
 
 			// doc.checkForDuplicates(el);
-			// doc.printFormatted(el,0);
+			doc.printFormatted(el,0);
 			// doc.toString(el,0);
 			// System.out.println(doc.docStr);
 			if(options.contains("--external-gradients"))	{
