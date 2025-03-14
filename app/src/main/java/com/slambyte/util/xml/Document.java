@@ -308,8 +308,11 @@ public class Document	{
 
 				tmpGrad.getChildren().clear();
 
-				List<String> string = new ArrayList<String>() { add("id"); };
-				List<Integer> exclude = new ArrayList<Integer>() { add(Element.ATTRIBUTE_TYPE); };
+				List<String> string = new ArrayList<String>()
+				string.add("id");
+
+				List<Integer> exclude = new ArrayList<Integer>();
+				exclude.add(Element.ATTRIBUTE_TYPE);
 				if(!isElementDuplicate(tmpGrads,tmpParent,exclude,string))	{
 					tmpGrad.addNsAttribute("xlink","href","#"+ id);
 					tmpGrads.add(tmpParent);
@@ -358,15 +361,13 @@ public class Document	{
 				for(int j = i+1; j < children.size(); j ++)	{
 					Element tmpChild = children.get(j);
 					if(tmpChild.hasNsAttribute("android","pathData"))	{
-						List<String> string = new ArrayList<String>() {
-							add("name");
-							add("pathData");
-						};
+						List<String> string = new ArrayList<String>();
+						string.add("name");
+						string.add("pathData");
 
-						List<Integer> exclude = new ArrayList<Integer>() {
-							add(Element.NS_ATTRIBUTE_TYPE);
-							add(Element.NS_ATTRIBUTE_TYPE);
-						};
+						List<Integer> exclude = new ArrayList<Integer>();
+						exclude.add(Element.NS_ATTRIBUTE_TYPE);
+						exclude.add(Element.NS_ATTRIBUTE_TYPE);
 
 						if(child.equals(tmpChild,exclude,string))	{
 
