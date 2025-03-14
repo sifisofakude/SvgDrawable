@@ -383,12 +383,33 @@ public class Document	{
 				}
 				// printFormatted(shape,0);
 			}
+
+			linkExternalGradient(element);
 		}
+	}
+
+	public void linkExternalGradient(Element element)	{
 		if(element.hasChildren())	{
 			for(Element child : element.getChildren())	{
-				printFormatted(child,0);
-			}
+				if("group".equals(child.getName())) 	{
+					linkExternalGradient(child);
+				}else if("path".equals(child.getName())) {
+					if(child.hasChildren())	{
+						Iterator<Element> iterator = child.getChildren().iterator();
+						while(iterator.hasNext())	{
+							Element tmpChild = iterator.next();
+							if("aapt:attr".equals(tmpChild.getName()))	{
+								String grad = tmpChild.getAttribute("gradientId").getValue();
+								String[] attr = tmpChild.getInlineAttribute("name").getValue().split(":");
 
+								child.addNsAttribute(attr[0],attr[1],"@drawable/"+grad);
+
+								iterator.remove();
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 
