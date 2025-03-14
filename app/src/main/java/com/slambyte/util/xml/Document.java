@@ -370,7 +370,7 @@ public class Document	{
 						exclude.add(Element.NS_ATTRIBUTE_TYPE);
 
 						if(child.equals(tmpChild,exclude,string))	{
-
+							printFormatted(child,0);
 						}
 					}
 				}
