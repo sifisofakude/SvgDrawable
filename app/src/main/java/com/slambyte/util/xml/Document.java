@@ -366,7 +366,7 @@ public class Document	{
 						string.add("pathData");
 
 						List<KeyValue> exclude = new ArrayList<KeyValue>()	{{
-							add(new KeyValue(Integer.valueOf(Element.NS_ATTRIBUTE_TYPE),string));
+							add(new KeyValue(Element.NS_ATTRIBUTE_TYPE,string));
 						}};
 						// exclude.add(Element.NS_ATTRIBUTE_TYPE);
 						// exclude.add(Element.NS_ATTRIBUTE_TYPE);
