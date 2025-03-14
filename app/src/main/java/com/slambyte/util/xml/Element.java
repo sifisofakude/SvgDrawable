@@ -1,5 +1,6 @@
 package com.slambyte.util.xml;
 
+import java.util.List;
 import java.util.ArrayList;
 
 public class Element implements Cloneable	{
