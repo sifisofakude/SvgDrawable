@@ -325,6 +325,7 @@ public class Element implements Cloneable	{
 			if(!inlineNsAttr) break;
 		}
 
+			System.out.println(string);
 		boolean attrsBool = false;
 		if(attributes.size() == element.getAttributes().size()) attrsBool = true;
 
@@ -336,7 +337,6 @@ public class Element implements Cloneable	{
 			var inAttr = element.getAttributes().get(i);
 
 			int index = exclude.indexOf(Element.ATTRIBUTE_TYPE);
-			System.out.println(index);
 			if(index > -1)	{
 				if(string.get(index).equals(attr.getName())) continue;
 			}
