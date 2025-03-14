@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.PrintStream;
 import java.io.IOException;
 
+import java.util.List;
 import java.util.Iterator;
 import java.util.ArrayList;
 
@@ -368,7 +369,7 @@ public class Document	{
 						};
 
 						if(child.equals(tmpChild,exclude,string))	{
-							
+
 						}
 					}
 				}
