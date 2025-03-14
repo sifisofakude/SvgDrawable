@@ -326,6 +326,7 @@ public class Element implements Cloneable	{
 		}
 
 			System.out.println(string);
+			System.out.println(exclude);
 		boolean attrsBool = false;
 		if(attributes.size() == element.getAttributes().size()) attrsBool = true;
 
