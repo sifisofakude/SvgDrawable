@@ -308,7 +308,7 @@ public class Document	{
 
 				tmpGrad.getChildren().clear();
 
-				List<String> string = new ArrayList<String>()
+				List<String> string = new ArrayList<String>();
 				string.add("id");
 
 				List<Integer> exclude = new ArrayList<Integer>();
