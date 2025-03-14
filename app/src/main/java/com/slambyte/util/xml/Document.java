@@ -365,9 +365,11 @@ public class Document	{
 						string.add("name");
 						string.add("pathData");
 
-						List<Integer> exclude = new ArrayList<Integer>();
-						exclude.add(Element.NS_ATTRIBUTE_TYPE);
-						exclude.add(Element.NS_ATTRIBUTE_TYPE);
+						List<KeyValue> exclude = new ArrayList<KeyValue>()	{{
+							add(new KeyValue(Integer.valueOf(Element.NS_ATTRIBUTE_TYPE),string));
+						}};
+						// exclude.add(Element.NS_ATTRIBUTE_TYPE);
+						// exclude.add(Element.NS_ATTRIBUTE_TYPE);
 
 							// printFormatted(child,0);
 						if(child.equals(tmpChild,exclude,string))	{
