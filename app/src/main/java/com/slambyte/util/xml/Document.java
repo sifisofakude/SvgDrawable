@@ -379,7 +379,7 @@ public class Document	{
 
 						new Thread(new Runnable()	{
 							public void run()	{
-								childNsAttr.setValue(" "+ tmpChidNsAttr.getValue());
+								childNsAttr.setValue(tmpChidNsAttr.getValue());
 							}
 						}).start();
 						// printFormatted(tmpChild,0);
