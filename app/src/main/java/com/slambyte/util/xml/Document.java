@@ -362,10 +362,10 @@ public class Document	{
 			ListIterator<Element> iterator = element.getChildren().listIterator();
 			while(iterator.hasNext())	{
 				Element child = iterator.next();
-					printFormatted(child,0);
-				// while(iterator.hasNext())	{
-				// 	Element tmpChild = iterator.next();
-				// }
+				while(iterator.hasNext())	{
+					Element tmpChild = iterator.next();
+					printFormatted(tmpChild,0);
+				}
 			}
 		}
 	}
