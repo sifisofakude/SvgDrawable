@@ -362,7 +362,7 @@ public class Document	{
 			List<Element> children = element.getChildren();
 			List<Element> toRemove = new ArrayList<Element>();
 			for(int i = 0; i < children.size(); i ++)	{
-				Element child = children.get(i);
+				final Element child = children.get(i);
 				if(toRemove.contains(child)) continue;
 
 				for(int j = i+1; j < children.size(); j ++)	{
@@ -379,7 +379,7 @@ public class Document	{
 
 						new Thread(new Runnable()	{
 							public void run()	{
-								childNsAttr.setValue(tmpChidNsAttr.getValue());
+								child.addNsAttribute("android","pathData",tmpChidNsAttr.getValue());
 							}
 						}).start();
 						// printFormatted(tmpChild,0);
