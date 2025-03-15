@@ -359,13 +359,23 @@ public class Document	{
 
 	public void cleanDuplicates(Element element)	{
 		if(element.hasChildren())	{
-			ListIterator<Element> iterator = element.getChildren().listIterator();
-			while(iterator.hasNext())	{
-				Element child = iterator.next();
-				while(iterator.hasNext())	{
-					Element tmpChild = iterator.next();
-					printFormatted(child,0);
-					printFormatted(tmpChild,0);
+			List<Element> children = element.getChildren();
+			List<Element> toRemove = new ArrayList<Element>();
+			for(int i = 0; i < children.size(); i ++)	{
+				Element child = children.get(i);
+				if(toRemove.contains(child)) continue;
+
+				for(int j = i+1; j < children.size(); j ++)	{
+					Element tmpChild = children.get(j);
+					if(toRemove.contains(tmpChild)) continue;
+
+					HashMap<Integer,List<String>> exclude = new HashMap<Integer,List<String>>()	{{
+						put(Element.NS_ATTRIBUTE_TYPE,new ArrayList<String>() {{ add("pathData"); }});
+					}};
+
+					if(child.equals(tmpChild,exclude))	{
+						printFormatted(tmpChild,0);
+					}
 				}
 			}
 		}
