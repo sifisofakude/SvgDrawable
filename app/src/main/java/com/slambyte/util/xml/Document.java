@@ -315,7 +315,7 @@ public class Document	{
 					put(Element.ATTRIBUTE_TYPE,new ArrayList<String>(){{ add("id"); }});
 				}};
 
-				if(!isElementDuplicate(tmpGrads,tmpParent,exclude)	{
+				if(!isElementDuplicate(tmpGrads,tmpParent,exclude))	{
 					tmpGrad.addNsAttribute("xlink","href","#"+ id);
 					tmpGrads.add(tmpParent);
 				}else {
