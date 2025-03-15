@@ -377,6 +377,10 @@ public class Document	{
 						final NsAttribute childNsAttr = child.getNsAttribute("android","pathData");
 						final NsAttribute tmpChildNsAttr = tmpChild.getNsAttribute("android","pathData");
 
+						if((childNsAttr.getValue()+ " "+ tmpChildNsAttr.getValue()).length() > 800)	{
+							break;
+						}
+
 						child.addNsAttribute("android","pathData",tmpChildNsAttr.getValue());
 
 						toRemove.add(tmpChild);
