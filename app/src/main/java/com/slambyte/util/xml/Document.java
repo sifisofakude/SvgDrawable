@@ -370,8 +370,8 @@ public class Document	{
 								add("pathData");
 							}});
 						}};
-							printFormatted(child,0);
 						if(child.equals(tmpChild,exclude))	{
+							printFormatted(child,0);
 
 						}
 					}
