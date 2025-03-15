@@ -387,6 +387,7 @@ System.out.println(childNsAttr.getValue());
 					}
 				}
 			}
+			children.removeAll(toRemove);
 		}
 	}
 
