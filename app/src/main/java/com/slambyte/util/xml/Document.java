@@ -376,14 +376,9 @@ public class Document	{
 					if(child.equals(tmpChild,exclude))	{
 						final NsAttribute childNsAttr = child.getNsAttribute("android","pathData");
 						final NsAttribute tmpChildNsAttr = tmpChild.getNsAttribute("android","pathData");
-// System.out.println(childNsAttr.getValue());
-						// printFormatted(tmpChild,0);
-								child.addNsAttribute("android","pathData",tmpChildNsAttr.getValue());
-						new Thread(new Runnable()	{
-							public void run()	{
-							}
-						}).start();
-						// printFormatted(tmpChild,0);
+
+						child.addNsAttribute("android","pathData",tmpChildNsAttr.getValue());
+
 						toRemove.add(tmpChild);
 					}
 				}
