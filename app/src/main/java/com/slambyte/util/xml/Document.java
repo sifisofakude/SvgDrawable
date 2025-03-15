@@ -374,7 +374,11 @@ public class Document	{
 					}};
 
 					if(child.equals(tmpChild,exclude))	{
-						printFormatted(tmpChild,0);
+						NsAttribute childNsAttr = child.getNsAttribute("android","pathData");
+						NsAttribute tmpChidNsAttr = child.getNsAttribute("android","pathData");
+
+						childNsAttr.setValue(childNsAttr.getValue()+ " "+ tmpChidNsAttr.getValue());
+						// printFormatted(tmpChild,0);
 						toRemove.add(tmpChild);
 					}
 				}
