@@ -371,7 +371,7 @@ public class Document	{
 							}});
 						}};
 						if(child.equals(tmpChild,exclude))	{
-							// printFormatted(child,0);
+							printFormatted(child,0);
 
 						}
 					}
