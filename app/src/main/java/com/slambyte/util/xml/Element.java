@@ -283,7 +283,7 @@ public class Element implements Cloneable	{
 		boolean inlineAttr = false;
 		if(inlineAttributes.size() == element.getInlineAttributes().size()) inlineAttr = true;
 		for(InlineAttribute attr : inlineAttributes)	{
-			List<String> strings = (List<String>) exclude.get(Element.ATTRIBUTE_TYPE);
+			List<String> strings = (List<String>) exclude.get(Element.INLINE_ATTRIBUTE_TYPE);
 			if(strings != null)	{
 				if(strings.contains(attr.getValue())) continue;
 			}
@@ -307,7 +307,7 @@ public class Element implements Cloneable	{
 		if(inlineNsAttributes.size() == element.getInlineNsAttributes().size()) inlineNsAttr = true;
 
 		for(InlineNsAttribute attr : inlineNsAttributes)	{
-			List<String> strings = (List<String>) exclude.get(Element.ATTRIBUTE_TYPE);
+			List<String> strings = (List<String>) exclude.get(Element.INLINE_NS_ATTRIBUTE_TYPE);
 			if(strings != null)	{
 				if(strings.contains(attr.getValue())) continue;
 			}
@@ -361,8 +361,8 @@ public class Element implements Cloneable	{
 			var attr = nsAttributes.get(i);
 			var inAttr = element.getNsAttributes().get(i);
 
-			List<String> strings = (List<String>) exclude.get(Element.ATTRIBUTE_TYPE);
-System.out.println(strings);
+			List<String> strings = (List<String>) exclude.get(Element.NS_ATTRIBUTE_TYPE);
+// System.out.println(strings);
 			if(strings != null)	{
 				if(strings.contains(attr.getValue())) continue;
 			}
