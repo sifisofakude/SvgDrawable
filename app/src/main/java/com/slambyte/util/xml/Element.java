@@ -354,7 +354,6 @@ public class Element implements Cloneable	{
 
 		boolean nsAttrsBool = false;
 		if(nsAttributes.size() == element.getNsAttributes().size()) nsAttrsBool = true;
-
 		for(int i = 0; i < nsAttributes.size(); i ++)	{
 			// if("name".equals(attr.getName())) continue;
 			if(!nsAttrsBool) break;
@@ -363,6 +362,7 @@ public class Element implements Cloneable	{
 			var inAttr = element.getNsAttributes().get(i);
 
 			List<String> strings = (List<String>) exclude.get(Element.ATTRIBUTE_TYPE);
+System.out.println(strings);
 			if(strings != null)	{
 				if(strings.contains(attr.getValue())) continue;
 			}
