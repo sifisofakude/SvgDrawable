@@ -374,10 +374,14 @@ public class Document	{
 					}};
 
 					if(child.equals(tmpChild,exclude))	{
-						NsAttribute childNsAttr = child.getNsAttribute("android","pathData");
-						NsAttribute tmpChidNsAttr = child.getNsAttribute("android","pathData");
+						final NsAttribute childNsAttr = child.getNsAttribute("android","pathData");
+						final NsAttribute tmpChidNsAttr = child.getNsAttribute("android","pathData");
 
-						child.addNsAttribute("android","pathData",tmpChidNsAttr.getValue());
+						new Thread(new Runnable()	{
+							public void run()	{
+								childNsAttr.setValue(childNsAttr.getValue() +" "+ tmpChidNsAttr.getValue());
+							}
+						}).start();
 						// printFormatted(tmpChild,0);
 						toRemove.add(tmpChild);
 					}
