@@ -285,7 +285,7 @@ public class Element implements Cloneable	{
 		for(InlineAttribute attr : inlineAttributes)	{
 			List<String> strings = (List<String>) exclude.get(Element.ATTRIBUTE_TYPE);
 			if(strings != null)	{
-				if(string.contains(attr.getValue())) continue;
+				if(strings.contains(attr.getValue())) continue;
 			}
 
 			InlineAttribute inAttr = element.getInlineAttribute(attr.getName());
@@ -309,7 +309,7 @@ public class Element implements Cloneable	{
 		for(InlineNsAttribute attr : inlineNsAttributes)	{
 			List<String> strings = (List<String>) exclude.get(Element.ATTRIBUTE_TYPE);
 			if(strings != null)	{
-				if(string.contains(attr.getValue())) continue;
+				if(strings.contains(attr.getValue())) continue;
 			}
 
 			InlineNsAttribute inAttr = element.getInlineNsAttribute(attr.getNs(),attr.getName());
@@ -340,7 +340,7 @@ public class Element implements Cloneable	{
 
 			List<String> strings = (List<String>) exclude.get(Element.ATTRIBUTE_TYPE);
 			if(strings != null)	{
-				if(string.contains(attr.getValue())) continue;
+				if(strings.contains(attr.getValue())) continue;
 			}
 
 			attrsBool = attr.getName().equals(inAttr.getName());
@@ -364,7 +364,7 @@ public class Element implements Cloneable	{
 
 			List<String> strings = (List<String>) exclude.get(Element.ATTRIBUTE_TYPE);
 			if(strings != null)	{
-				if(string.contains(attr.getValue())) continue;
+				if(strings.contains(attr.getValue())) continue;
 			}
 
 			nsAttrsBool = attr.getName().equals(inAttr.getName());
