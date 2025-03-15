@@ -312,7 +312,7 @@ public class Document	{
 				// List<String> string = new ArrayList<String>();
 				// string.add("id");
 
-				HashMao<Integer,List<String>> exclude = new HashMao<Integer,List<String>>() {{
+				HashMap<Integer,List<String>> exclude = new HashMao<Integer,List<String>>() {{
 					put(Element.ATTRIBUTE_TYPE,new ArrayList<String>(){{ add("id"); }});
 				}};
 
@@ -364,7 +364,7 @@ public class Document	{
 				for(int j = i+1; j < children.size(); j ++)	{
 					Element tmpChild = children.get(j);
 					if(tmpChild.hasNsAttribute("android","pathData"))	{
-						HashMao<Integer,List<String>> exclude = new HashMao<Integer,List<String>>()	{{
+						HashMap<Integer,List<String>> exclude = new HashMao<Integer,List<String>>()	{{
 							put(Element.NS_ATTRIBUTE_TYPE,new ArrayList<String>(){{
 								add("name");
 								add("pathData");
