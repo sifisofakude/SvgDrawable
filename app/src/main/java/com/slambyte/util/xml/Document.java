@@ -379,7 +379,7 @@ public class Document	{
 
 						new Thread(new Runnable()	{
 							public void run()	{
-								child.addNsAttribute("android","pathData",tmpChidNsAttr.getValue());
+								child.addNsAttribute("android","pathData",childNsAttr.getValue() +" "+tmpChidNsAttr.getValue());
 							}
 						}).start();
 						// printFormatted(tmpChild,0);
