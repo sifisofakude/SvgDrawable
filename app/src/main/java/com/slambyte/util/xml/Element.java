@@ -362,8 +362,8 @@ public class Element implements Cloneable	{
 			var inAttr = element.getNsAttributes().get(i);
 
 			List<String> strings = (List<String>) exclude.get(Element.NS_ATTRIBUTE_TYPE);
-System.out.println(strings);
 			if(strings != null)	{
+System.out.println(attr.getValue()+ " "+ strings);
 				if(strings.contains(attr.getValue())) continue;
 			}
 
