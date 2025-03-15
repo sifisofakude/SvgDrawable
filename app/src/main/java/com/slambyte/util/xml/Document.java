@@ -363,9 +363,9 @@ public class Document	{
 			while(iterator.hasNext())	{
 				Element child = iterator.next();
 					printFormatted(child,0);
-				while(iterator.hasNext())	{
-					Element tmpChild = iterator.next();
-				}
+				// while(iterator.hasNext())	{
+				// 	Element tmpChild = iterator.next();
+				// }
 			}
 		}
 	}
