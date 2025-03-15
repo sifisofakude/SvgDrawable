@@ -363,7 +363,7 @@ public class Element implements Cloneable	{
 
 			List<String> strings = (List<String>) exclude.get(Element.NS_ATTRIBUTE_TYPE);
 			if(strings != null)	{
-System.out.println(attr.getValue()+ " "+ strings);
+System.out.println(attr.getName()+ " "+ strings);
 				if(strings.contains(attr.getValue())) continue;
 			}
 
