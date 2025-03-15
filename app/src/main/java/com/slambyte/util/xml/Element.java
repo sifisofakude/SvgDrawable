@@ -1,6 +1,7 @@
 package com.slambyte.util.xml;
 
 import java.util.List;
+import java.util.HashMap;
 import java.util.ArrayList;
 
 public class Element implements Cloneable	{
@@ -270,7 +271,7 @@ public class Element implements Cloneable	{
 		return result;
 	}
 
-	public boolean equals(Element element,List<Integer> exclude,List<String> string)	{
+	public boolean equals(Element element,HashMap<Integer,List<String>> exclude)	{
 		boolean result = super.equals(element);
 
 		boolean nameBool = false;
@@ -282,9 +283,9 @@ public class Element implements Cloneable	{
 		boolean inlineAttr = false;
 		if(inlineAttributes.size() == element.getInlineAttributes().size()) inlineAttr = true;
 		for(InlineAttribute attr : inlineAttributes)	{
-			int index = exclude.indexOf(Element.INLINE_ATTRIBUTE_TYPE);
-			if(index > -1)	{
-				if(string.get(index).equals(attr.getName())) continue;
+			List<String> strings = (List<String>) exclude.get(Element.ATTRIBUTE_TYPE);
+			if(strings != null)	{
+				if(string.contains(attr.getValue())) continue;
 			}
 
 			InlineAttribute inAttr = element.getInlineAttribute(attr.getName());
@@ -306,9 +307,9 @@ public class Element implements Cloneable	{
 		if(inlineNsAttributes.size() == element.getInlineNsAttributes().size()) inlineNsAttr = true;
 
 		for(InlineNsAttribute attr : inlineNsAttributes)	{
-			int index = exclude.indexOf(Element.INLINE_NS_ATTRIBUTE_TYPE);
-			if(index > -1)	{
-				if(string.get(index).equals(attr.getName())) continue;
+			List<String> strings = (List<String>) exclude.get(Element.ATTRIBUTE_TYPE);
+			if(strings != null)	{
+				if(string.contains(attr.getValue())) continue;
 			}
 
 			InlineNsAttribute inAttr = element.getInlineNsAttribute(attr.getNs(),attr.getName());
@@ -337,9 +338,9 @@ public class Element implements Cloneable	{
 			var attr = attributes.get(i);
 			var inAttr = element.getAttributes().get(i);
 
-			int index = exclude.indexOf(Element.ATTRIBUTE_TYPE);
-			if(index > -1)	{
-				if(string.get(index).equals(attr.getName())) continue;
+			List<String> strings = (List<String>) exclude.get(Element.ATTRIBUTE_TYPE);
+			if(strings != null)	{
+				if(string.contains(attr.getValue())) continue;
 			}
 
 			attrsBool = attr.getName().equals(inAttr.getName());
@@ -361,9 +362,9 @@ public class Element implements Cloneable	{
 			var attr = nsAttributes.get(i);
 			var inAttr = element.getNsAttributes().get(i);
 
-			int index = exclude.indexOf(Element.NS_ATTRIBUTE_TYPE);
-			if(index > -1)	{
-				if(string.get(index).equals(attr.getName())) continue;
+			List<String> strings = (List<String>) exclude.get(Element.ATTRIBUTE_TYPE);
+			if(strings != null)	{
+				if(string.contains(attr.getValue())) continue;
 			}
 
 			nsAttrsBool = attr.getName().equals(inAttr.getName());

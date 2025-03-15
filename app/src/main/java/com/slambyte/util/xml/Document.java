@@ -308,17 +308,19 @@ public class Document	{
 
 				tmpGrad.getChildren().clear();
 
-				List<String> string = new ArrayList<String>();
-				string.add("id");
+				// List<String> string = new ArrayList<String>();
+				// string.add("id");
 
-				List<Integer> exclude = new ArrayList<Integer>();
-				exclude.add(Element.ATTRIBUTE_TYPE);
-				if(!isElementDuplicate(tmpGrads,tmpParent,exclude,string))	{
+				HashMao<Integer,List<String>> exclude = new HashMao<Integer,List<String>>() {{
+					put(Element.ATTRIBUTE_TYPE,new ArrayList<String>(){{ add("id"); }});
+				}};
+
+				if(!isElementDuplicate(tmpGrads,tmpParent,exclude)	{
 					tmpGrad.addNsAttribute("xlink","href","#"+ id);
 					tmpGrads.add(tmpParent);
 				}else {
 					for(var tmp : tmpGrads)	{
-						if(tmp.equals(tmpParent,exclude,string))	{
+						if(tmp.equals(tmpParent,exclude))	{
 							tmpGrad.addNsAttribute("xlink","href","#"+ tmp.getAttribute("id").getValue());
 							break;
 						}
@@ -342,10 +344,10 @@ public class Document	{
 		return isDuplicate;
 	}
 
-	private boolean isElementDuplicate(ArrayList<Element> grads,Element elem,List<Integer> exclude,List<String> string)	{
+	private boolean isElementDuplicate(ArrayList<Element> grads,Element elem,HashMap<Integer,List<String>> exclude)	{
 		boolean isDuplicate = false;
 		for(Element grad : grads)	{
-			if(grad.equals(elem,exclude,string))	{
+			if(grad.equals(elem,exclude))	{
 				isDuplicate = true;
 				break;
 			}
@@ -361,19 +363,16 @@ public class Document	{
 				for(int j = i+1; j < children.size(); j ++)	{
 					Element tmpChild = children.get(j);
 					if(tmpChild.hasNsAttribute("android","pathData"))	{
-						List<String> string = new ArrayList<String>();
-						string.add("name");
-						string.add("pathData");
-
-						List<KeyValue> exclude = new ArrayList<KeyValue>()	{{
-							add(new KeyValue(Element.NS_ATTRIBUTE_TYPE,string));
+						HashMao<Integer,List<String>> exclude = new HashMao<Integer,List<String>>()	{{
+							put(Element.NS_ATTRIBUTE_TYPE,new ArrayList<String>(){{
+								add("name");
+								add("pathData");
+							}});
 						}};
-						// exclude.add(Element.NS_ATTRIBUTE_TYPE);
-						// exclude.add(Element.NS_ATTRIBUTE_TYPE);
-
+						if(child.equals(tmpChild,exclude))	{
 							// printFormatted(child,0);
-						// if(child.equals(tmpChild,exclude,string))	{
-						// }
+
+						}
 					}
 				}
 			}
