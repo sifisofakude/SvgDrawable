@@ -377,7 +377,7 @@ public class Document	{
 						NsAttribute childNsAttr = child.getNsAttribute("android","pathData");
 						NsAttribute tmpChidNsAttr = child.getNsAttribute("android","pathData");
 
-						childNsAttr.setValue(childNsAttr.getValue()+ " "+ tmpChidNsAttr.getValue());
+						child.addNsAttribute("android","pathData",childNsAttr.getValue()+ " "+ tmpChidNsAttr.getValue());
 						// printFormatted(tmpChild,0);
 						toRemove.add(tmpChild);
 					}
