@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 public class Document	{
 	boolean isAaptHit = false;
@@ -358,23 +359,12 @@ public class Document	{
 
 	public void cleanDuplicates(Element element)	{
 		if(element.hasChildren())	{
-			ArrayList<Element> children = element.getChildren();
-			for(int i = 0; i < children.size(); i ++)	{
-				Element child = children.get(i);
-				for(int j = i+1; j < children.size(); j ++)	{
-					Element tmpChild = children.get(j);
-					if(tmpChild.hasNsAttribute("android","pathData"))	{
-						HashMap<Integer,List<String>> exclude = new HashMap<Integer,List<String>>()	{{
-							put(Element.NS_ATTRIBUTE_TYPE,new ArrayList<String>(){{
-								add("name");
-								add("pathData");
-							}});
-						}};
-						if(child.equals(tmpChild,exclude))	{
-							printFormatted(child,0);
-
-						}
-					}
+			ListIterator<Element> iterator = element.getChildren().listIterator();
+			while(iterator.hasNext())	{
+				Element child = iterator.next();
+				while(iterator.hasNext())	{
+					Element tmpChild = iterator.next();
+					printFormatted(child,0);
 				}
 			}
 		}
