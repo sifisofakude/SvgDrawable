@@ -377,9 +377,9 @@ public class Document	{
 						final NsAttribute childNsAttr = child.getNsAttribute("android","pathData");
 						final NsAttribute tmpChidNsAttr = child.getNsAttribute("android","pathData");
 
+								child.addNsAttribute("android","pathData",tmpChidNsAttr.getValue());
 						new Thread(new Runnable()	{
 							public void run()	{
-								child.addNsAttribute("android","pathData",tmpChidNsAttr.getValue());
 							}
 						}).start();
 						// printFormatted(tmpChild,0);
