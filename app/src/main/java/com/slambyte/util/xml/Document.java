@@ -375,6 +375,7 @@ public class Document	{
 
 					if(child.equals(tmpChild,exclude))	{
 						printFormatted(tmpChild,0);
+						toRemove.add(tmpChild);
 					}
 				}
 			}
