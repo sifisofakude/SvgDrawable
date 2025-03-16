@@ -190,20 +190,24 @@ public class AttributeFromString	{
 		}
 
 		if(name.equals("android:fillColor"))	{
-			Attribute attr = element.getAttribute("style");
-			
-			String opacity = opacityFromRgbaHex(value);
-			if(attr != null)	{
-				String tmpValue = attr.getValue();
-				tmpValue += ";fill:" + ((opacity != null) ? "#" +value.substring(3):value);
+				if(!value.startsWith("@drawable/"))	{
+				Attribute attr = element.getAttribute("style");
+				
+				String opacity = opacityFromRgbaHex(value);
+				if(attr != null)	{
+					String tmpValue = attr.getValue();
+					tmpValue += ";fill:" + ((opacity != null) ? "#" +value.substring(3):value);
 
-				value = tmpValue;
-			}else	{
-				value = "fill:" + ((opacity != null) ? "#" +value.substring(3):value);
+					value = tmpValue;
+				}else	{
+					value = "fill:" + ((opacity != null) ? "#" +value.substring(3):value);
+				}
+
+				if(opacity != null) value += ";fill-opacity:"+opacity;
+				element.addAttribute("style",value);
 			}
-
-			if(opacity != null) value += ";fill-opacity:"+opacity;
-			element.addAttribute("style",value);
+		}else {
+			// AttributeFromString.urlRef = FILL_URL_REF;
 		}
 
 		if(name.equals("android:fillApha"))	{
@@ -342,6 +346,7 @@ public class AttributeFromString	{
 				AttributeFromString.urlRef = NO_URL_REF;
 				return;
 			}
+
 			if(value.equals("android:fillColor") || value.equals("android:strokeColor"))	{
 				if(value.equals("android:fillColor"))	{
 					AttributeFromString.urlRef = FILL_URL_REF;
