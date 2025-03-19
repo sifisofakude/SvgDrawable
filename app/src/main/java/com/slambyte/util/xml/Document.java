@@ -369,21 +369,42 @@ public class Document	{
 					Element tmpChild = children.get(j);
 					if(toRemove.contains(tmpChild)) continue;
 
-					HashMap<Integer,List<String>> exclude = new HashMap<Integer,List<String>>()	{{
-						put(Element.NS_ATTRIBUTE_TYPE,new ArrayList<String>() {{ add("pathData"); }});
-					}};
+					if(child.hasNsAttribute("android","pathData"))	{
+						HashMap<Integer,List<String>> exclude = new HashMap<Integer,List<String>>()	{{
+							put(Element.NS_ATTRIBUTE_TYPE,new ArrayList<String>() {{ add("pathData"); }});
+						}};
 
-					if(child.equals(tmpChild,exclude))	{
-						final NsAttribute childNsAttr = child.getNsAttribute("android","pathData");
-						final NsAttribute tmpChildNsAttr = tmpChild.getNsAttribute("android","pathData");
+						if(child.equals(tmpChild,exclude))	{
+							final NsAttribute childNsAttr = child.getNsAttribute("android","pathData");
+							final NsAttribute tmpChildNsAttr = tmpChild.getNsAttribute("android","pathData");
 
-						if((childNsAttr.getValue()+ " "+ tmpChildNsAttr.getValue()).length() > 800)	{
-							break;
+							if((childNsAttr.getValue()+ " "+ tmpChildNsAttr.getValue()).length() > 800)	{
+								break;
+							}
+
+							child.addNsAttribute("android","pathData",tmpChildNsAttr.getValue());
+
+							toRemove.add(tmpChild);
 						}
+					}
 
-						child.addNsAttribute("android","pathData",tmpChildNsAttr.getValue());
+					if(child.hasAttribute("d"))	{
+						HashMap<Integer,List<String>> exclude = new HashMap<Integer,List<String>>()	{{
+							put(Element.ATTRIBUTE_TYPE,new ArrayList<String>() {{ add("d"); }});
+						}};
 
-						toRemove.add(tmpChild);
+						if(child.equals(tmpChild,exclude))	{
+							final Attribute childNsAttr = child.getAttribute("d");
+							final Attribute tmpChildNsAttr = tmpChild.getAttribute("d");
+
+							if((childNsAttr.getValue()+ " "+ tmpChildNsAttr.getValue()).length() > 800)	{
+								break;
+							}
+
+							child.addAttribute("d",tmpChildNsAttr.getValue());
+
+							toRemove.add(tmpChild);
+						}
 					}
 				}
 			}
