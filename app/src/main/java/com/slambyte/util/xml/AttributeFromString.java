@@ -55,13 +55,12 @@ public class AttributeFromString	{
 		// System.out.println(name +" "+ value);
 
 		if(name.equals("width") || name.equals("height"))	{
-			double d = Double.valueOf(value);
-			String s = String.format("%.2f",d);
-			System.out.println(s.replace(",","."));
+			double d = Double.valueOf(value.replaceAll("[a-zA-Z]",""));
+			String s = String.format("%.2f",d).replace(",",".");
 			if(isConverting)	{
-				element.addNsAttribute("android",name,value.replaceAll("[a-zA-Z]","") + "dp");
+				element.addNsAttribute("android",name,s + "dp");
 			}else	{
-				element.addAttribute(name,value);
+				element.addAttribute(name,s);
 			}
 		}
 
@@ -76,8 +75,11 @@ public class AttributeFromString	{
 		if(name.equals("viewBox"))	{
 			String[] values = value.split(" ");
 
-			String vpWidth = values[2];
-			String vpHeight = values[3];
+			double vpWidthDouble = Double.valueOf(value[2]);
+			String vpWidth = String.format("%.2f",vpWidthDouble).replace(",",".");
+
+			double vpHeightDouble = Double.valueOf(value[3]);
+			String vpHeight = String.format("%.2f",vpHeightDouble).replace(",",".");
 
 			if(isConverting)	{
 				element.addNsAttribute("android","viewportWidth",vpWidth);
