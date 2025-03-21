@@ -55,6 +55,8 @@ public class AttributeFromString	{
 		// System.out.println(name +" "+ value);
 
 		if(name.equals("width") || name.equals("height"))	{
+			double d = Double.valueOf(value);
+			String s = String.format("%.2f",d);
 			if(isConverting)	{
 				element.addNsAttribute("android",name,value.replaceAll("[a-zA-Z]","") + "dp");
 			}else	{
