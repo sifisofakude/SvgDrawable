@@ -75,10 +75,10 @@ public class AttributeFromString	{
 		if(name.equals("viewBox"))	{
 			String[] values = value.split(" ");
 
-			double vpWidthDouble = Double.valueOf(value[2]);
+			double vpWidthDouble = Double.valueOf(values[2]);
 			String vpWidth = String.format("%.2f",vpWidthDouble).replace(",",".");
 
-			double vpHeightDouble = Double.valueOf(value[3]);
+			double vpHeightDouble = Double.valueOf(values[3]);
 			String vpHeight = String.format("%.2f",vpHeightDouble).replace(",",".");
 
 			if(isConverting)	{
