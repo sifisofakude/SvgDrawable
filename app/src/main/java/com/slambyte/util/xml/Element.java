@@ -121,7 +121,7 @@ public class Element implements Cloneable	{
 			attr = new Attribute(name,value);
 			attributes.add(attr);
 		}else	{
-			attr.setValue(attr.getValue() +" "+ value);
+			attr.setValue(value);
 		}
 	}
 
