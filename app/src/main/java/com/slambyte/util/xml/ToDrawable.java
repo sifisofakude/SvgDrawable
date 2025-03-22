@@ -35,7 +35,7 @@ public class ToDrawable	{
 			}
 
 			if(element == null)	{
-				doc.currentTag = Element.ELEMENT_TAG_UNKNOWN;
+				doc.currentTag = Document.ELEMENT_TAG_UNKNOWN;
 			}
 
 			if(name.length() > 2)	{
