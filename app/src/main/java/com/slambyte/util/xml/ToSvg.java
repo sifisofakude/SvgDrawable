@@ -49,7 +49,7 @@ public class ToSvg	{
 				}
 
 				if(element == null)	{
-					doc.currentTag = Documnet.ELEMENT_TAG_UNKNOWN;
+					doc.currentTag = Document.ELEMENT_TAG_UNKNOWN;
 				}
 					
 				if(doc.knownTagOpen())	{
