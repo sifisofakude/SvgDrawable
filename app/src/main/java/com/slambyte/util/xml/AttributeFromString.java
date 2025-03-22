@@ -162,10 +162,11 @@ public class AttributeFromString	{
 				String tmp = attr.getValue();
 				String[] tmpValue = tmp.split(" ");
 				value = "0 0 "+value + " " + tmpValue[3];
+				attr.setValue(value);
 			}else	{
 				value = "0 0 "+value;
+				element.addAttribute("viewBox",value);
 			}
-			element.addAttribute("viewBox",value);
 		}
 
 		if(name.equals("android:name"))	{
