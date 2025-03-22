@@ -44,11 +44,9 @@ public class ToSvg	{
 			if(name.substring(0,1).equals("/"))	{
 				name = name.substring(1,name.length()-1);
 
-				// System.out.println(name + " "+ doc.getElement().getName());
-				
-				// if(doc.isAcceptingChildren())	{
-					// doc.closeElement(name);
-				// }
+				if(name.equals("path"))	{
+					checkFillColor(doc.getElement());
+				}
 					
 				if(doc.knownTagOpen())	{
 					// if(name.equals("aapt:attr"))	{
@@ -74,12 +72,33 @@ public class ToSvg	{
 					if(line.substring(len-1).equals(">"))	{
 						if(line.substring(len-2,len-1).equals("/"))	{
 							String name = doc.getElement().getName();
+							if(name.equals("path"))	{
+								checkFillColor(doc.getElement());
+							}
 							doc.closeElement(name);
 						}else	{
 							doc.acceptChildren();
 						}
 					}
 				}
+			}
+		}
+	}
+
+	public void checkFillColor(Element element)	{
+		Attribute attr = element.getAttribute("style");
+		if(attr !=  null)	{
+			boolean isFound = false;
+			String[] styles = attr.getValue().split(";");
+			for(String style : styles)	{
+				if(style.startsWith("fill:"))	{
+					isFound = true;
+					break;
+				}
+			}
+
+			if(!isFound)	{
+				element.appendAttribute("style",";fill:none");
 			}
 		}
 	}
