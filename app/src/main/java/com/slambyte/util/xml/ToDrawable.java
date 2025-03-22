@@ -31,7 +31,7 @@ public class ToDrawable	{
 			}
 			
 			if(name.equals("defs"))	{
-				element = new Element(name);
+				// element = new Element(name);
 			}
 
 			if(element == null)	{
