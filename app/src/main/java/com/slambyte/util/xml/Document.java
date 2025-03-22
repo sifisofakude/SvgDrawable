@@ -382,7 +382,7 @@ public class Document	{
 								break;
 							}
 
-							child.addNsAttribute("android","pathData",childNsAttr.getValue() +" "+ tmpChildNsAttr.getValue());
+							child.appendNsAttribute("android","pathData"," "+ tmpChildNsAttr.getValue());
 
 							toRemove.add(tmpChild);
 						}
@@ -401,7 +401,7 @@ public class Document	{
 								break;
 							}
 
-							child.appendAttribute("d",childNsAttr.getValue() +" "+ tmpChildNsAttr.getValue());
+							child.appendAttribute("d"," "+ tmpChildNsAttr.getValue());
 
 							toRemove.add(tmpChild);
 						}

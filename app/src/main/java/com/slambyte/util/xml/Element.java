@@ -151,6 +151,19 @@ public class Element implements Cloneable	{
 		}
 	}
 
+	public void appendNsAttribute(String ns,String name,String value)	{
+		if(ns == null || name == null || value == null) return;
+		if(ns.isEmpty() || name.isEmpty() || value.isEmpty()) return;
+
+		NsAttribute attr = getNsAttribute(ns,name);
+		if(attr == null)	{
+			attr = new NsAttribute(ns,name,value);
+			nsAttributes.add(attr);
+		}else	{
+			attr.setValue(attr.getValue()+""+value);
+		}
+	}
+
 	public void addInlineAttribute(String name,String value)	{
 		if(name == null || value == null) return;
 		if(name.isEmpty() || value.isEmpty()) return;
