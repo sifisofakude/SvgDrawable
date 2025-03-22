@@ -64,7 +64,7 @@ public class AttributeFromString	{
 			}
 		}
 
-		if(name.equals("id"))	{
+		if(name.equals("id") && doc.currentTag != Document.ELEMENT_TAG_DEFS)	{
 			if(isConverting)	{
 				element.addNsAttribute("android","name",value);
 			}else	{
