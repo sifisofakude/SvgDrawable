@@ -47,6 +47,10 @@ public class ToSvg	{
 				if(name.equals("path"))	{
 					checkFillColor(doc.getElement());
 				}
+
+				if(element == null)	{
+					doc.currentTag = Element.ELEMENT_TAG_UNKNOWN;
+				}
 					
 				if(doc.knownTagOpen())	{
 					// if(name.equals("aapt:attr"))	{

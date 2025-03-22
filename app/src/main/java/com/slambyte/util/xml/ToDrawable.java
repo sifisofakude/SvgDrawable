@@ -34,6 +34,10 @@ public class ToDrawable	{
 				element = new Element(name);
 			}
 
+			if(element == null)	{
+				doc.currentTag = Element.ELEMENT_TAG_UNKNOWN;
+			}
+
 			if(name.length() > 2)	{
 				if(name.length() > 8 && "Gradient".equals(name.substring(name.length()-8)))	{
 					String type = name.substring(0,name.length()-8);
