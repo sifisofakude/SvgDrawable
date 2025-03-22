@@ -134,7 +134,7 @@ public class Element implements Cloneable	{
 			attr = new NsAttribute(ns,name,value);
 			nsAttributes.add(attr);
 		}else	{
-			attr.setValue(attr.getValue() +" "+ value);
+			attr.setValue(value);
 		}
 	}
 
@@ -144,7 +144,7 @@ public class Element implements Cloneable	{
 
 		InlineAttribute attr = getInlineAttribute(name);
 		if(attr != null)	{
-			attr.setValue(attr.getValue() +" "+ value);
+			attr.setValue(value);
 		}else {
 			attr = new InlineAttribute(name,value);
 			inlineAttributes.add(attr);
@@ -157,7 +157,7 @@ public class Element implements Cloneable	{
 
 		InlineNsAttribute attr = getInlineNsAttribute(ns,name);
 		if(attr != null)	{
-			attr.setValue(attr.getValue() +" "+ value);
+			attr.setValue(value);
 		}else {
 			attr = new InlineNsAttribute(ns,name,value);
 			inlineNsAttributes.add(attr);
