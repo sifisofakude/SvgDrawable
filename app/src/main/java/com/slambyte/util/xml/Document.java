@@ -401,7 +401,7 @@ public class Document	{
 								break;
 							}
 
-							child.addAttribute("d",childNsAttr.getValue() +" "+ tmpChildNsAttr.getValue());
+							child.appendAttribute("d",childNsAttr.getValue() +" "+ tmpChildNsAttr.getValue());
 
 							toRemove.add(tmpChild);
 						}

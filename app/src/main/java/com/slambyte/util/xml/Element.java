@@ -125,6 +125,19 @@ public class Element implements Cloneable	{
 		}
 	}
 
+	public void appendAttribute(String name,String value)	{
+		if(name == null || value == null) return;
+		if(name.isEmpty() || value.isEmpty()) return;
+
+		Attribute attr = getAttribute(name);
+		if(attr == null)	{
+			attr = new Attribute(name,value);
+			attributes.add(attr);
+		}else	{
+			attr.setValue(attr.getValue()+""+value);
+		}
+	}
+
 	public void addNsAttribute(String ns,String name,String value)	{
 		if(ns == null ||name == null || value == null) return;
 		if(ns.isEmpty() || name.isEmpty() || value.isEmpty()) return;
