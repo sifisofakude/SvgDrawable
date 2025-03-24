@@ -17,7 +17,7 @@ public class Parser	{
 	public static final int CONVERTING_TO_DRAWABLE = 2;
 	public static final int NOT_CONVERTING = 3;
 
-	private int currentProcess = NOT_CONVERTING;
+	private int currentProcess = Parser.NOT_CONVERTING;
 	Document doc;
 
 	public Parser()	{
@@ -40,11 +40,11 @@ public class Parser	{
 
 		String extension = input.substring(input.length()-3);
 		if(extension.equals("svg"))	{
-			currentProcess = CONVERTING_TO_DRAWABLE;
+			currentProcess = Parser.CONVERTING_TO_DRAWABLE;
 		}else if(extension.equals("xml"))	{
-			currentProcess = CONVERTING_TO_SVG;
+			currentProcess = Parser.CONVERTING_TO_SVG;
 		}else 	{
-			currentProcess = NOT_CONVERTING;
+			currentProcess = Parser.NOT_CONVERTING;
 		}
 
 		if(output == null)	{

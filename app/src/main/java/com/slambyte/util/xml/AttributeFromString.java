@@ -196,7 +196,7 @@ public class AttributeFromString	{
 		}
 
 		if(name.equals("android:fillColor"))	{
-				if(!value.startsWith("@drawable/"))	{
+			if(!value.startsWith("@drawable/"))	{
 				Attribute attr = element.getAttribute("style");
 				
 				String opacity = opacityFromRgbaHex(value);
@@ -211,6 +211,34 @@ public class AttributeFromString	{
 
 				if(opacity != null) value += ";fill-opacity:"+opacity;
 				element.addAttribute("style",value);
+			}else {
+				Parser tmpParse = new Parser()	{
+					public void parseFile(String input,int process)	{
+						if(input == null || input.replaceAll("\\s\\|\\t\\","").isEmpty()) return;
+
+						try	{
+							BufferedReader br = new BufferedReader(new FileReader(input));
+							String line;
+							while((line = br.readLine()) != null)	{
+								processLine(line);
+							}
+							Element element = doc.getElement();
+							while(element.getParent() != null)	{
+								element = element.getParent();
+							}
+						}catch(IOException e)	{
+							e.printStackTrace();
+						}
+					}
+				}
+
+				String path = "res/"+value.replace("@drawable/","")+".xml";
+				tmpParse.parseFile(path,Parser.CONVERTING_TO_SVG);
+
+				Element tmpElement = tmpParse.getElement();
+				if(tmpElement != null)	{
+					doc.gradients.add(tmpElement);
+				}
 			}
 		}else {
 			// AttributeFromString.urlRef = FILL_URL_REF;
