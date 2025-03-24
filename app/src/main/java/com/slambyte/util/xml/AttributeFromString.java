@@ -230,7 +230,7 @@ public class AttributeFromString	{
 							e.printStackTrace();
 						}
 					}
-				}
+				};
 
 				String path = "res/"+value.replace("@drawable/","")+".xml";
 				tmpParse.parseFile(path,Parser.CONVERTING_TO_SVG);
