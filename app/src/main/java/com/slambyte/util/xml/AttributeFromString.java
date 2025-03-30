@@ -64,7 +64,7 @@ public class AttributeFromString	{
 			if(isConverting)	{
 				element.addNsAttribute("android",name,s + "dp");
 			}else	{
-				element.addAttribute(name,s);
+				element.addAttribute(name,s+""+value.replaceAll("[^a-zA-Z]",""));
 			}
 		}
 
