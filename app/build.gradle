@@ -30,8 +30,8 @@ java {
     }
 }
 
-    archivesBaseName = 'SVGDrawable'
-    archiveVersion = '1.0.1-Beta'
+    def archivesBaseName = 'SVGDrawable'
+    def archiveVersion = '1.0.1-Beta'
 // jar     {
 // }
 
