@@ -30,10 +30,10 @@ java {
     }
 }
 
-jar     {
     archivesBaseName = 'SVGDrawable'
     archiveVersion = '1.0.1'
-}
+// jar     {
+// }
 
 application {
     // Define the main class for the application.
