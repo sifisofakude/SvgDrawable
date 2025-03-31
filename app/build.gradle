@@ -31,7 +31,7 @@ java {
 }
 
     archivesBaseName = 'SVGDrawable'
-    archiveVersion = '1.0.1'
+    archiveVersion = '1.0.1-Beta'
 // jar     {
 // }
 
