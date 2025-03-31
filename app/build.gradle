@@ -31,8 +31,8 @@ java {
 }
 
 jar     {
-    archivesBaseName = 'SVGDrawable'
-    archiveVersion = '1.0.1'
+    def archivesBaseName = 'SVGDrawable'
+    def archiveVersion = '1.0.1'
 }
 
 application {
