@@ -30,6 +30,11 @@ java {
     }
 }
 
+jar     {
+    archivesBaseName = 'SVGDrawable'
+    archiveVersion = '1.0.1'
+}
+
 application {
     // Define the main class for the application.
     mainClass = 'com.slambyte.util.xml.App'
