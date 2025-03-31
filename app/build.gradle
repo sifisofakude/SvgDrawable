@@ -30,10 +30,10 @@ java {
     }
 }
 
-    def archivesBaseName = 'SVGDrawable'
-    def archiveVersion = '1.0.1-Beta'
-// jar     {
-// }
+jar     {
+    archivesBaseName = 'SVGDrawable'
+    archiveVersion = '1.0.1-Beta'
+}
 
 application {
     // Define the main class for the application.
