@@ -80,11 +80,10 @@ public class Parser	{
 			while((line = br.readLine()) != null)	{
 				processLine(line);
 			}
-			// doc.writeToFile(output);
 			Element el = doc.getElement();
 			while(el.getParent() != null)	{
 				Element parent = el.getParent();
-				// System.out.println(parent.getName() + " " + el.getName());
+
 				if(el.getName().equals(parent.getName())) break;
 				el = parent;
 			}
@@ -120,16 +119,12 @@ public class Parser	{
 				}
 			}
 
-			// doc.checkForDuplicates(el);
 			doc.printFormatted(el,0);
-			// doc.toString(el,0);
-			// System.out.println(doc.docStr);
 			if(options.contains("--external-gradients"))	{
 				Path path = new File(input).toPath();
 				Path parent = path.getParent();
-				// new File((parent != null ? parent.toString()+"/":"")+"res/drawable").mkdirs();
+
 				output = (parent != null ? parent.toString()+"/":"")+"res/drawable/"+output;
-				// System.out.println(output);
 			}
 			doc.writeToFile(output);
 		}catch(IOException e)	{}
@@ -181,8 +176,6 @@ public class Parser	{
 					tmpElement.addChild(elem);
 				}
 			}
-			// doc.printFormatted(element,0);
-			// doc.writeToFile(output);
 		}catch(IOException e)	{}
 	}
 
@@ -199,7 +192,6 @@ public class Parser	{
 		element.addAttribute("viewBox",viewBox);
 
 		doc.setCurrentElement(element);
-		// doc.printFormatted(element,0);
 	}
 
 	public boolean writeToFile(String path)	{
@@ -215,7 +207,6 @@ public class Parser	{
 	}
 
 	public void processLine(String line)	{
-		// System.out.println(line.trim());
 		if(line == null || line.isEmpty()) return;
 
 		line = line.trim();
@@ -224,7 +215,6 @@ public class Parser	{
 		if(elements.length() > 0)	{
 			String tmpLine;
 			while((tmpLine = elements.getLine()) != null)	{
-				// if(currentProcess == CONVERTING_TO_DRAWABLE)
 				ElementOrAttribute ea = new ElementOrAttribute(tmpLine);
 
 				String tmpLineII;

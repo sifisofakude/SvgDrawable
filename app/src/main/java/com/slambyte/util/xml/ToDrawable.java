@@ -58,20 +58,6 @@ public class ToDrawable	{
 					element.addNsAttribute("android","type",type);
 
 					Element root = doc.getElement();
-					// doc.printFormatted(root,0);
-
-							// System.out.println(root.getParent().getName());
-					if(root != null)	{
-						// root = (Element) root.clone();
-						// while(root.getParent() != null)	{
-						// 	root = root.getParent();
-						// }
-						// root.addNsAttribute("xmlns","aapt","http://schemas.android.com/aapt");
-						// NsAttribute attr = new NsAttribute("xmlns","aapt","http://schemas.android.com/aapt");
-
-						// ArrayList<NsAttribute> attrs = root.getNsAttributes();
-						// attrs.add(1,attr);
-					}
 				}
 			}
 
@@ -80,17 +66,9 @@ public class ToDrawable	{
 			}
 
 			if(name.substring(0,1).equals("/"))	{
-				// doc.isAcceptingChildren(false);
 				name = name.substring(1,name.length()-1);
-
-				// if(doc.isAcceptingChildren())	{
-				// 	doc.isAcceptingChildren(false);
-				// 	// doc.closeElement(name);
-				// }
 				
 				if(doc.knownTagOpen())	{
-					// System.out.println(doc.getElement().getName());
-
 					doc.closeElement(name);
 				}
 			}
@@ -105,13 +83,10 @@ public class ToDrawable	{
 				int len = line.length();
 				if(line.substring(len-1).equals(">"))	{
 					if(line.substring(len-2,len-1).equals("/"))	{
-					// doc.removeGradientAttributes();
 						if(doc.getElement() != null)	{
 							String name = doc.getElement().getName();
 							doc.closeElement(name);
 						}
-					}else	{
-						// doc.acceptChildren();
 					}
 				}
 				

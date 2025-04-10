@@ -53,7 +53,6 @@ public class Element implements Cloneable	{
 			ArrayList<Attribute> tmpAttributes = new ArrayList<Attribute>();
 			for(Attribute attr : attributes)	{
 				tmpAttributes.add((Attribute) attr.clone());
-			// System.out.println(attr.getName());
 			}
 			tmpElement.setAttributes(tmpAttributes);
 			tmpAttributes = null;
@@ -61,7 +60,6 @@ public class Element implements Cloneable	{
 			ArrayList<NsAttribute> tmpNsAttributes = new ArrayList<NsAttribute>();
 			for(NsAttribute attr : nsAttributes)	{
 				tmpNsAttributes.add((NsAttribute) attr.clone());
-			// System.out.println(attr.getName());
 			}
 			tmpElement.setNsAttributes(tmpNsAttributes);
 			tmpNsAttributes = null;
@@ -69,7 +67,6 @@ public class Element implements Cloneable	{
 			ArrayList<InlineAttribute> tmpInlineAttributes = new ArrayList<InlineAttribute>();
 			for(InlineAttribute attr : inlineAttributes)	{
 				tmpInlineAttributes.add((InlineAttribute) attr.clone());
-			// System.out.println(attr.getName());
 			}
 			tmpElement.setInlineAttributes(tmpInlineAttributes);
 			tmpInlineAttributes = null;
@@ -77,7 +74,6 @@ public class Element implements Cloneable	{
 			ArrayList<InlineNsAttribute> tmpInlineNsAttributes = new ArrayList<InlineNsAttribute>();
 			for(InlineNsAttribute attr : inlineNsAttributes)	{
 				tmpInlineNsAttributes.add((InlineNsAttribute) attr.clone());
-			// System.out.println(attr.getName());
 			}
 			tmpElement.setInlineNsAttributes(tmpInlineNsAttributes);
 			tmpInlineNsAttributes = null;
@@ -130,9 +126,6 @@ public class Element implements Cloneable	{
 
 		Attribute attr = getAttribute(name);
 
-		if(name.equals("viewBox"))	{
-			// System.out.println(attr == null);
-		}
 		if(attr == null)	{
 			attr = new Attribute(name,value);
 			attributes.add(attr);
@@ -233,14 +226,11 @@ public class Element implements Cloneable	{
 			}
 			if(!inlineAttr) break;
 		}
-		// System.out.println(name);
-		// System.out.println(inlineAttr);
 
 		boolean inlineNsAttr = false;
 		if(inlineNsAttributes.size() == element.getInlineNsAttributes().size()) inlineNsAttr = true;
 
 		for(InlineNsAttribute attr : inlineNsAttributes)	{
-			// if("name".equals(attr.getName())) continue;
 			if(!inlineNsAttr) break;
 			InlineNsAttribute inAttr = element.getInlineNsAttribute(attr.getNs(),attr.getName());
 			if(inAttr != null)	{
@@ -260,17 +250,13 @@ public class Element implements Cloneable	{
 		if(attributes.size() == element.getAttributes().size()) attrsBool = true;
 
 		for(int i = 0; i < attributes.size(); i ++)	{
-			// if("name".equals(attr.getName())) continue;
 			if(!attrsBool) break;
 
-			var attr = attributes.get(i);
-			var inAttr = element.getAttributes().get(i);
+			Attribute attr = attributes.get(i);
+			Attribute inAttr = element.getAttributes().get(i);
 
 			attrsBool = attr.getName().equals(inAttr.getName());
 			attrsBool = attr.getValue().equals(inAttr.getValue());
-
-			// System.out.println(attr.getName() +" "+ inAttr.getName());
-			// System.out.println(attr.getValue() +" "+ inAttr.getValue());
 
 			if(!attrsBool) break;
 		}
@@ -279,11 +265,10 @@ public class Element implements Cloneable	{
 		if(nsAttributes.size() == element.getNsAttributes().size()) nsAttrsBool = true;
 
 		for(int i = 0; i < nsAttributes.size(); i ++)	{
-			// if("name".equals(attr.getName())) continue;
 			if(!nsAttrsBool) break;
 
-			var attr = nsAttributes.get(i);
-			var inAttr = element.getNsAttributes().get(i);
+			NsAttribute attr = nsAttributes.get(i);
+			NsAttribute inAttr = element.getNsAttributes().get(i);
 
 			nsAttrsBool = attr.getName().equals(inAttr.getName());
 			nsAttrsBool = attr.getValue().equals(inAttr.getValue());
@@ -300,7 +285,6 @@ public class Element implements Cloneable	{
 				Element inChild = element.getChildren().get(i);
 
 				childBool = child.equals(inChild);
-			// System.out.println(child.getName() + " " + inChild.getName() +" "+ child.equals(inChild));
 
 				if(!childBool) break;
 			}
@@ -309,7 +293,6 @@ public class Element implements Cloneable	{
 				result = true;
 			}
 		}
-		// System.out.println(nsAttrsBool +" "+ attrsBool +" "+ childBool +" "+ inlineAttr);
 		return result;
 	}
 
@@ -342,8 +325,6 @@ public class Element implements Cloneable	{
 			}
 			if(!inlineAttr) break;
 		}
-		// System.out.println(name);
-		// System.out.println(inlineAttr);
 
 		boolean inlineNsAttr = false;
 		if(inlineNsAttributes.size() == element.getInlineNsAttributes().size()) inlineNsAttr = true;
@@ -368,28 +349,21 @@ public class Element implements Cloneable	{
 			if(!inlineNsAttr) break;
 		}
 
-			// System.out.println(string);
-			// System.out.println(exclude);
 		boolean attrsBool = false;
 		if(attributes.size() == element.getAttributes().size()) attrsBool = true;
 
 		for(int i = 0; i < attributes.size(); i ++)	{
-			// if("name".equals(attr.getName())) continue;
 			if(!attrsBool) break;
 
-			var attr = attributes.get(i);
-			var inAttr = element.getAttributes().get(i);
+			Attribute attr = attributes.get(i);
+			Attribute inAttr = element.getAttributes().get(i);
 
 			List<String> strings = (List<String>) exclude.get(Element.ATTRIBUTE_TYPE);
 			if(strings != null)	{
 				if(strings.contains(attr.getName())) continue;
 			}
-
 			attrsBool = attr.getName().equals(inAttr.getName());
 			attrsBool = attr.getValue().equals(inAttr.getValue());
-
-			// System.out.println(attr.getName() +" "+ inAttr.getName());
-			// System.out.println(attr.getValue() +" "+ inAttr.getValue());
 
 			if(!attrsBool) break;
 		}
@@ -397,15 +371,13 @@ public class Element implements Cloneable	{
 		boolean nsAttrsBool = false;
 		if(nsAttributes.size() == element.getNsAttributes().size()) nsAttrsBool = true;
 		for(int i = 0; i < nsAttributes.size(); i ++)	{
-			// if("name".equals(attr.getName())) continue;
 			if(!nsAttrsBool) break;
 
-			var attr = nsAttributes.get(i);
-			var inAttr = element.getNsAttributes().get(i);
+			NsAttribute attr = nsAttributes.get(i);
+			NsAttribute inAttr = element.getNsAttributes().get(i);
 
 			List<String> strings = (List<String>) exclude.get(Element.NS_ATTRIBUTE_TYPE);
 			if(strings != null)	{
-// System.out.println(attr.getName()+ " "+ strings);
 				if(strings.contains(attr.getName())) continue;
 			}
 
@@ -424,7 +396,6 @@ public class Element implements Cloneable	{
 				Element inChild = element.getChildren().get(i);
 
 				childBool = child.equals(inChild);
-			// System.out.println(child.getName() + " " + inChild.getName() +" "+ child.equals(inChild));
 
 				if(!childBool) break;
 			}
@@ -433,7 +404,6 @@ public class Element implements Cloneable	{
 				result = true;
 			}
 		}
-		// System.out.println(nsAttrsBool +" "+ attrsBool +" "+ childBool +" "+ inlineAttr);
 		return result;
 	}
 

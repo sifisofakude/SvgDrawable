@@ -38,24 +38,19 @@ public class ToSvg	{
 			if(name.equals("gradient"))	{
 				element = new Element("gradient");
 				element.addAttribute("gradientUnits","userSpaceOnUse");
-				// doc.isAcceptingChildren(false);
 			}
 
 			if(name.equals("aapt:attr"))	{
-				// doc.isAcceptingChildren(false);
 				element = new Element("aapt");
 			}
 
 			if(name.equals("group"))	{
 				element = new Element("g");
-				// doc.printFormatted(element,0);
 			}
 
 			if(name.equals("item"))	{
 				element = new Element("stop");
 			}
-
-			// System.out.println(name);
 
 			if(name.substring(0,1).equals("/"))	{
 				name = name.substring(1,name.length()-1);
@@ -69,14 +64,10 @@ public class ToSvg	{
 				}
 					
 				if(doc.knownTagOpen())	{
-					// if(name.equals("aapt:attr"))	{
-						// doc.closeAaptElement();
-					// }else {
 					doc.closeElement(name);
 					doc.isAcceptingChildren(false);
 
 					element = null;
-					// }
 				}
 			}
 

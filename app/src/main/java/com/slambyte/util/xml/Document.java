@@ -191,8 +191,6 @@ public class Document	{
 			removeGradientAttributes();
 		}
 
-		// // System.out.println(name);
-
 		if(currentTag == Document.ELEMENT_TAG_ROOT)	{
 			if(rootName.equals("vector"))	{
 				linkGradients();
@@ -208,15 +206,12 @@ public class Document	{
 					currentTag = getElementTag(currentElement.getName());
 				}
 			}
-			// currentTag = Document.ELEMENT_TAG_UNKNOWN;
 		}else {
 			if(currentGradient.hasParent())	{
 				currentGradient = currentGradient.getParent();
 			}else {
 				if(!isElementDuplicate(gradients,currentGradient))	{
-				// printFormatted(currentGradient,0);
 					gradients.add(currentGradient);
-					// System.out.println(gradients.size());
 				}
 				currentGradient = null;
 			}
@@ -239,24 +234,19 @@ public class Document	{
 						Element tmp = (Element) aapts.get(i).clone();
 						Attribute attr = tmp.getAttribute("id");
 						String aaptId = attr != null ? attr.getValue():null;
-						// System.out.println(aaptId);
 						if(aaptId != null && fillId.equals(aaptId))	{
 							tmp.removeAttribute("id");
 							element.addChild(tmp);
-							// printFormatted(element,0);
 							continue;
 						}
 
 						if(aaptId != null && strokeId.equals(strokeId))	{
 							tmp.removeAttribute("id");
 							element.addChild(tmp);
-							// printFormatted(tmp,0);
 							continue;
 						}
-						// printFormatted(tmp,0);
 					}
 				}
-				// currentTag = Document.ELEMENT_TAG_GROUP;
 			}
 		}
 	}
@@ -270,21 +260,17 @@ public class Document	{
 		if(gradientsLinked) return;
 
 		if(gradients.size() > 0)	{
-			var tmpGrads = new ArrayList<Element>();
-// System.out.println(gradients.size());
+			ArrayList<Element> tmpGrads = new ArrayList<Element>();
 			for(int i = 0; i < gradients.size();i++)	{
 				Element grad = gradients.get(i);
 				Attribute attr = grad.getAttribute("childGradient");
 				if(attr != null)	{
-					for(var tmpGrad : gradients)	{
-						var tmpAttr = tmpGrad.getNsAttribute("android","name");
+					for(Element tmpGrad : gradients)	{
+						NsAttribute tmpAttr = tmpGrad.getNsAttribute("android","name");
 						if(attr.getValue().equals(tmpAttr.getValue()))	{
 							grad.addChildren(((Element) tmpGrad.clone()).getChildren());
 							
 						}
-					// printFormatted(tmpGrad,0);
-					// printFormatted(grad,0);
-
 					}
 					tmpGrads.add(grad);
 					grad.removeAttribute("childGradient");
@@ -299,11 +285,11 @@ public class Document	{
 
 	public void populateAapts()	{
 		System.out.println(aapts.size());
-		for(var aapt : aapts)	{
-			var gradId = aapt.getAttribute("gradientId").getValue();
-			for(var grad : gradients)	{
-				var attr = grad.getNsAttribute("android","name");
-			// System.out.println(gradId + " "+ attr.getValue());
+		for(Element aapt : aapts)	{
+			String gradId = aapt.getAttribute("gradientId").getValue();
+			for(Element grad : gradients)	{
+				NsAttribute attr = grad.getNsAttribute("android","name");
+
 				if(gradId.equals(attr.getValue()))	{
 					aapt.addChild(grad);
 					aapt.removeAttribute("gradientId");
@@ -314,20 +300,16 @@ public class Document	{
 
 	public void unlinkGradients()	{
 		ArrayList<Element> tmpGrads = new ArrayList<Element>();
-		// System.out.println(gradients.size());
 		for(Element grad : gradients)	{
 			Element tmpGrad = (Element) grad.clone();
 			if(tmpGrad.hasChildren())	{
 				Element tmpParent = new Element("linearGradient");
 
-				var id = "linearGradient"+ (Math.round(Math.random()*8000)+1000);
+				String id = "linearGradient"+ (Math.round(Math.random()*8000)+1000);
 				tmpParent.addAttribute("id",id);
 				tmpParent.addChildren(tmpGrad.getChildren());
 
 				tmpGrad.getChildren().clear();
-
-				// List<String> string = new ArrayList<String>();
-				// string.add("id");
 
 				HashMap<Integer,List<String>> exclude = new HashMap<Integer,List<String>>() {{
 					put(Element.ATTRIBUTE_TYPE,new ArrayList<String>(){{ add("id"); }});
@@ -337,7 +319,7 @@ public class Document	{
 					tmpGrad.addNsAttribute("xlink","href","#"+ id);
 					tmpGrads.add(tmpParent);
 				}else {
-					for(var tmp : tmpGrads)	{
+					for(Element tmp : tmpGrads)	{
 						if(tmp.equals(tmpParent,exclude))	{
 							tmpGrad.addNsAttribute("xlink","href","#"+ tmp.getAttribute("id").getValue());
 							break;
@@ -443,7 +425,6 @@ public class Document	{
 				}catch(Exception e)	{
 					System.out.println(e);
 				}
-				// printFormatted(shape,0);
 			}
 
 			linkExternalGradient(element);

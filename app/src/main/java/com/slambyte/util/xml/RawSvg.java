@@ -37,12 +37,9 @@ public class RawSvg	{
 
 			if(name.equals("g"))	{
 				element = new Element("g");
-				// doc.printFormatted(element,0);
 			}
 
 			if(name.substring(0,1).equals("/"))	{
-					// System.out.println(line);
-				// doc.isAcceptingChildren(false);
 				name = name.substring(1,name.length()-1);
 
 				if(doc.isAcceptingChildren())	{
