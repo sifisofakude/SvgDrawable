@@ -32,7 +32,7 @@ java {
 
 jar     {
     archivesBaseName = 'SVGDrawable'
-    archiveVersion = '1.0.1-Beta'
+    archiveVersion = '1.0.1'
 }
 
 application {

@@ -15,10 +15,10 @@ $ java -jar /path/to/svgdrawable.jar --help
 usage: java -jar /path/to/svgdrawable.jar inputfile [outputfile] [options]
 
 options:
-    --clean-duplicates     merges paths elements with same
+   --clean-duplicates      merges paths elements with same
                            styling in to one path element.
 
-   	--external-gradients   parses gradients from inpufile and
+   --external-gradients    parses gradients from inpufile and
                            save them in a separate file,only works when
                            converting to Android Vector Drawable and
                            saves the file in the res/drawable folder 
