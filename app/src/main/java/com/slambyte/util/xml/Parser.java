@@ -92,7 +92,7 @@ public class Parser	{
 				doc.gradientsLinked = false;
 
 				Path file = new File(input).toPath();
-				// System.out.println(file.getParent().toString());
+
 				for(String option : options)	{
 					switch(option)	{
 					case "--clean-duplicates"-> doc.cleanDuplicates(el);
@@ -229,6 +229,7 @@ public class Parser	{
 				}
 			}
 		}else	{
+			// System.out.println(line);
 			ElementOrAttribute ea = new ElementOrAttribute(line);
 
 			String tmpLine;
@@ -256,10 +257,11 @@ public class Parser	{
 			int end_index = -1;
 
 			String tmpLine;
+
 			
 			for(int i = 0; i < line.length(); i ++)	{
 				String character = line.substring(i,i+1);
-
+			// System.out.println(character);
 
 				if(character.equals("\"")) quote_hit = quote_hit ? false:true;
 
@@ -273,6 +275,7 @@ public class Parser	{
 				}
 
 				if(start_index > -1 && end_index > -1)	{
+					if(start_index > end_index) continue;
 					lines.add(line.substring(start_index,end_index));
 					
 					start_index = -1;
@@ -308,6 +311,7 @@ public class Parser	{
 				int end_index = -1;
 				int start_index = -1;
 				for(int i = 0; i < line.length(); i ++)	{
+					if(start_index > end_index) continue;
 					if(line.substring(i,i+1).equals("<")) start_index = i;
 					if(line.substring(i,i+1).equals(">")) end_index = i;
 

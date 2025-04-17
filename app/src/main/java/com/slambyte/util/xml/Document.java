@@ -69,7 +69,6 @@ public class Document	{
 
 	public Element getElement()	{
 		if(currentTag == Document.ELEMENT_TAG_GRADIENT || currentTag == Document.ELEMENT_TAG_STOP)	{
-		// System.out.println(currentTag);
 			return currentGradient;
 		}else {
 			return currentElement;
@@ -84,8 +83,6 @@ public class Document	{
 		currentTag = getElementTag(element.getName());
 
 		if(currentTag != Document.ELEMENT_TAG_GRADIENT && currentTag != Document.ELEMENT_TAG_STOP)	{
-			// if(currentElement == null) currentElement = element;
-
 			if(currentTag != Document.ELEMENT_TAG_AAPT && currentTag != Document.ELEMENT_TAG_DEFS)	{
 				if(currentElement != null)	{
 					currentElement.addChild(element);
@@ -98,14 +95,9 @@ public class Document	{
 			}
 		}else {
 			if(currentGradient != null)	{
-				// // while(currentGradient.getParent() != null)	{
-				// 	// currentGradient = currentGradient.getParent();
-				// // }
 				currentGradient.addChild(element);
 			}
-		// printFormatted(currentGradient,0);
 			currentGradient = element;
-			// printFormatted(element,0);
 		}
 	}
 
@@ -183,7 +175,6 @@ public class Document	{
 
 		if(currentTag == Document.ELEMENT_TAG_PATH)	{
 			if("vector".equals(rootName))	{
-				// addGradientToGroupChildren(currentElement);
 			}
 		}
 

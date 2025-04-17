@@ -661,14 +661,9 @@ public class AttributeFromString	{
 			if(translate.length == 2)	{
 				translateY = translate[1];
 			}
-		// System.out.println(transformation);
-
 		}
-		// if(doc.currentTag == Document.ELEMENT_TAG_GRADIENT)	{
-			// Element aapt = new Element("aapt:attr");
-			if(translateX != null) element.addNsAttribute("android","translateX",translateX);
-			if(translateY != null) element.addNsAttribute("android","translateY",translateX);
-		// }
+		if(translateX != null) element.addNsAttribute("android","translateX",translateX);
+		if(translateY != null) element.addNsAttribute("android","translateY",translateY);
 	}
 
 	public String opacityToHex(String opacity)	{
@@ -677,7 +672,6 @@ public class AttributeFromString	{
 		int raw = (int) (Double.valueOf(opacity)*255);
 		result = String.format("%x",raw);
 		result = result.equals("0") ? "0"+result:result;
-		// System.out.println(result);
 		return result;
 	}
 
@@ -687,7 +681,6 @@ public class AttributeFromString	{
 		if(color.length() == 9)	{
 			String hex = color.substring(1,3);
 			
-			// hex to int
 			float op = Integer.valueOf(hex,16);
 
 			opacity = String.format("%f",op/255.0).replace(",",".");

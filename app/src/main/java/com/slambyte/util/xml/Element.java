@@ -466,6 +466,13 @@ public class Element implements Cloneable	{
 		return attr;
 	}
 
+	public Element getChildAt(int index)	{
+		if(index > -1 && index < children.size())	{
+			return children.get(index);
+		}
+		return null;
+	}
+
 	public boolean hasParent()	{
 		if(parent != null)	{
 			return true;

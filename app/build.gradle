@@ -17,10 +17,13 @@ repositories {
 
 dependencies {
     // Use JUnit test framework.
-    //testImplementation libs.junit
+    // testImplementation libs.junit
+    testImplementation 'org.mockito:mockito-core:3.5.13'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 
     // This dependency is used by the application.
-    //implementation libs.guava
+    implementation libs.guava
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -31,13 +34,17 @@ java {
 }
 
 jar     {
-    archivesBaseName = 'SVGDrawable'
-    archiveVersion = '1.0.2'
+    // archivesBaseName = 'SVGDrawable'
+    archiveVersion = '1.0.1'
 }
 
 application {
     // Define the main class for the application.
     mainClass = 'com.slambyte.util.xml.App'
+}
+
+test    {
+    useJUnitPlatform()
 }
 
 version = '1.0.1'
