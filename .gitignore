@@ -8,3 +8,6 @@ app/build/classes
 app/build/generated
 app/build/scripts
 app/build/tmp
+app/build/reports
+app/build/test-results
+build
