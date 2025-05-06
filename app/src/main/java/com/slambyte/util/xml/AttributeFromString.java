@@ -78,7 +78,11 @@ public class AttributeFromString	{
 			double d = Double.valueOf(value.replaceAll("[a-zA-Z]",""));
 			String s = String.format("%.2f",d).replace(",",".");
 			if(isConverting)	{
-				element.addNsAttribute("android",name,s + "dp");
+				if("vector".equals(element.getName()))	{
+					element.addNsAttribute("android",name,s + "dp");
+				}else {
+					element.addNsAttribute("android",name,s);
+				}
 			}else	{
 				element.addAttribute(name,s+""+value.replaceAll("[^a-zA-Z]",""));
 			}
@@ -411,7 +415,13 @@ public class AttributeFromString	{
 			}
 		}
 
-		// if()
+		if(name.equals("cx") || name.equals("cy") || name.equals("r") || name.equals("y") || name.equals("x"))	{
+			element.addNsAttribute("android",name,value);
+		}
+
+		if(name.equals("rx") || name.equals("ry"))	{
+			element.addNsAttribute("android",name,value);
+		}
 
 		if(name.equals("x1"))	{
 			element.addNsAttribute("android","startX",value);
@@ -451,6 +461,34 @@ public class AttributeFromString	{
 
 		if(name.equals("android:endY"))	{
 			element.addAttribute("y2",value);
+		}
+
+		if(name.equals("android:y"))	{
+			element.addAttribute("y",value);
+		}
+
+		if(name.equals("android:x"))	{
+			element.addAttribute("x",value);
+		}
+
+		if(name.equals("android:ry"))	{
+			element.addAttribute("ry",value);
+		}
+
+		if(name.equals("android:rx"))	{
+			element.addAttribute("rx",value);
+		}
+
+		if(name.equals("android:cx"))	{
+			element.addAttribute("cx",value);
+		}
+
+		if(name.equals("android:cy"))	{
+			element.addAttribute("cy",value);
+		}
+
+		if(name.equals("android:r"))	{
+			element.addAttribute("r",value);
 		}
 
 		if(name.equals("android:type"))	{

@@ -31,6 +31,8 @@ public class ToDrawable	{
 			if(name.equals("svg"))	{
 				element = new Element("vector");
 				element.addNsAttribute("xmlns","android","http://schemas.android.com/apk/res/android");
+
+				doc.rootElement = element;
 			}
 
 
@@ -40,6 +42,18 @@ public class ToDrawable	{
 
 			if(name.equals("path"))	{
 				element = new Element("path");
+			}
+
+			if(name.equals("circle"))	{
+				element = new Element("circle");
+			}
+
+			if(name.equals("rect"))	{
+				element = new Element("rect");
+			}
+
+			if(name.equals("ellipse"))	{
+				element = new Element("ellipse");
 			}
 
 			if(name.equals("stop"))	{

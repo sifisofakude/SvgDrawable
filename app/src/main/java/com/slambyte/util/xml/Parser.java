@@ -84,8 +84,12 @@ public class Parser	{
 			while(el.getParent() != null)	{
 				Element parent = el.getParent();
 
-				if(el.getName().equals(parent.getName())) break;
+				// if(el.getName().equals(parent.getName())) break;
 				el = parent;
+			}
+
+			if(currentProcess == Parser.CONVERTING_TO_DRAWABLE)	{
+				doc.optimizeDrawable(el);
 			}
 
 			if(options != null && options.size() > 0 && "vector".equals(el.getName()))	{
@@ -95,8 +99,15 @@ public class Parser	{
 
 				for(String option : options)	{
 					switch(option)	{
-					case "--clean-duplicates"-> doc.cleanDuplicates(el);
-					case "--external-gradients"-> doc.saveGradients(el,file.getParent().toString());
+					case "--clean-duplicates":
+						doc.cleanDuplicates(el);
+						break;
+					case "--split-long-paths":
+						doc.splitPaths(el);
+						break;
+					case "--external-gradients":
+						doc.saveGradients(el,file.getParent().toString());
+						break;
 					}
 				}
 			}
@@ -119,7 +130,7 @@ public class Parser	{
 				}
 			}
 
-			doc.printFormatted(el,0);
+			// doc.printFormatted(el,0);
 			if(options.contains("--external-gradients"))	{
 				Path path = new File(input).toPath();
 				Path parent = path.getParent();

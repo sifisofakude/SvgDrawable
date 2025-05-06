@@ -29,6 +29,8 @@ public class ToSvg	{
 			if(name.equals("vector"))	{
 				element = new Element("svg");
 				element.addAttribute("xmlns","http://www.w3.org/2000/svg");
+
+				doc.rootElement = element;
 			}
 
 			if(name.equals("path"))	{
@@ -50,6 +52,14 @@ public class ToSvg	{
 
 			if(name.equals("item"))	{
 				element = new Element("stop");
+			}
+
+			if(name.equals("circle"))	{
+				element = new Element("circle");
+			}
+
+			if(name.equals("rect"))	{
+				element = new Element("rect");
 			}
 
 			if(name.substring(0,1).equals("/"))	{

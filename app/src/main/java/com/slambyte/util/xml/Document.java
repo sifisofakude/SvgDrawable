@@ -31,6 +31,7 @@ public class Document	{
 	boolean gradientsLinked = false;
 	boolean acceptingChildren = false;
 
+	public Element rootElement = null;
 	public Element currentElement = null;
 	public Element currentGradient = null;
 
@@ -52,6 +53,9 @@ public class Document	{
 	public static final int ELEMENT_TAG_GRADIENT = 6;
 	public static final int ELEMENT_TAG_AAPT = 7;
 	public static final int ELEMENT_TAG_DEFS = 8;
+	public static final int ELEMENT_TAG_RECT = 9;
+	public static final int ELEMENT_TAG_CIRCLE = 10;
+	public static final int ELEMENT_TAG_ELLIPSE = 11;
 
 	public int currentTag = Document.ELEMENT_TAG_UNKNOWN;
 
@@ -127,6 +131,15 @@ public class Document	{
 			case "defs":
 				tag = Document.ELEMENT_TAG_DEFS;
 				break;
+			case "rect":
+				tag = Document.ELEMENT_TAG_RECT;
+				break;
+			case "ellipse":
+				tag = Document.ELEMENT_TAG_ELLIPSE;
+				break;
+			case "circle":
+				tag = Document.ELEMENT_TAG_CIRCLE;
+				break;
 			case "aapt":
 			case "aapt:attr":
 				tag = Document.ELEMENT_TAG_AAPT;
@@ -149,6 +162,9 @@ public class Document	{
 			case Document.ELEMENT_TAG_AAPT:
 			case Document.ELEMENT_TAG_DEFS:
 			case Document.ELEMENT_TAG_GROUP:
+			case Document.ELEMENT_TAG_RECT:
+			case Document.ELEMENT_TAG_CIRCLE:
+			case Document.ELEMENT_TAG_ELLIPSE:
 			case Document.ELEMENT_TAG_GRADIENT:
 				isTagKnown = true;
 				break;
@@ -354,13 +370,20 @@ public class Document	{
 				final Element child = children.get(i);
 				if(toRemove.contains(child)) continue;
 
+				if(!"path".equals(child.getName()) && child.hasChildren())	{
+					cleanDuplicates(child);
+				}
+
 				for(int j = i+1; j < children.size(); j ++)	{
 					Element tmpChild = children.get(j);
 					if(toRemove.contains(tmpChild)) continue;
 
 					if(child.hasNsAttribute("android","pathData"))	{
 						HashMap<Integer,List<String>> exclude = new HashMap<Integer,List<String>>()	{{
-							put(Element.NS_ATTRIBUTE_TYPE,new ArrayList<String>() {{ add("pathData"); }});
+							put(Element.NS_ATTRIBUTE_TYPE,new ArrayList<String>() {{
+								add("name");
+								add("pathData");
+							}});
 						}};
 
 						if(child.equals(tmpChild,exclude))	{
@@ -368,10 +391,17 @@ public class Document	{
 							final NsAttribute tmpChildNsAttr = tmpChild.getNsAttribute("android","pathData");
 
 							if((childNsAttr.getValue()+ " "+ tmpChildNsAttr.getValue()).length() > 800)	{
-								break;
+								continue;
 							}
 
-							child.appendNsAttribute("android","pathData"," "+ tmpChildNsAttr.getValue());
+							String value = tmpChildNsAttr.getValue();
+
+							String[] valueArr = value.split("");
+							valueArr[0] = valueArr[0].toUpperCase();
+
+							value = String.join("",valueArr);
+
+							child.appendNsAttribute("android","pathData"," "+ value);
 
 							toRemove.add(tmpChild);
 						}
@@ -398,6 +428,94 @@ public class Document	{
 				}
 			}
 			children.removeAll(toRemove);
+		}
+	}
+
+	public void splitPaths(Element element)	{
+		
+	}
+
+	public void optimizeDrawable(Element element)	{
+		if(element.hasChildren())	{
+			ArrayList<Element> children = element.getChildren();
+			for(int i = 0; i < children.size(); i++)	{
+				Element child = children.get(i);
+
+				if((!"circle".equals(child.getName()) || !"rect".equals(child.getName())) && child.hasChildren())	{
+					optimizeDrawable(child);
+				}
+
+				// Convert rect element containing rx/ry to path element
+				if("rect".equals(child.getName()))	{
+					String rxString = null;
+					String ryString = null;
+					double x = Double.valueOf(child.getNsAttribute("android","x").getValue());
+					double y = Double.valueOf(child.getNsAttribute("android","y").getValue());
+					double width = Double.valueOf(child.getNsAttribute("android","width").getValue());
+					double height = Double.valueOf(child.getNsAttribute("android","height").getValue());
+
+					if(child.hasNsAttribute("android","rx"))	{
+						rxString = child.getNsAttribute("android","rx").getValue();
+					}else {
+						rxString = "0";
+					}
+
+					if(child.hasNsAttribute("android","ry"))	{
+						ryString = child.getNsAttribute("android","ry").getValue();
+					}else {
+						ryString = "0";
+					}
+
+					double rx = Double.valueOf(rxString);
+					double ry = Double.valueOf(ryString);
+
+					if(child.hasNsAttribute("android","rx") || child.hasNsAttribute("android","ry"))	{
+						String pathData = "M"+ (x+rx) +","+ y +" ";
+						pathData += ("L"+ (x+width-rx) +","+ y +" ");
+						pathData += ("C"+ (x+width-rx+rx) +","+ y +" "+ (x+width) +","+ (y+ry) +" ");
+						pathData += ((x+width) +","+ (y+ry)+ " ");
+						pathData += ("L"+ (x+width) +","+ (y+height-ry) + " ");
+						pathData += ("C"+ (x+width) +","+ (y+height-ry+ry) +" ");
+						pathData += ((x+width-rx) +","+ (y+height) +" "+ (x+width-rx) +","+ (y+height) +" ");
+						pathData += ("L"+ (x+rx) +","+ (y+height) +" ");
+						pathData += ("C"+ (x+rx-ry) +","+ (y+height) +" "+ x +","+ (y+height-ry) +" ");
+						pathData += (x +","+ (y+height-ry) +" ");
+						pathData += ("L"+ x +","+ (y+ry) +" ");
+						pathData += ("C"+ x +","+ (y+ry-ry) +" "+ (x+rx) +","+ y +" "+ (x+rx) +","+ y);
+
+						child.removeNsAttribute("android","x"); 
+						child.removeNsAttribute("android","y"); 
+						child.removeNsAttribute("android","rx"); 
+						child.removeNsAttribute("android","ry"); 
+						child.removeNsAttribute("android","width"); 
+						child.removeNsAttribute("android","height");
+
+						child.setName("path");
+						child.addNsAttribute("android","pathData",pathData); 
+					}
+				}
+
+				// Convert circle element containing rx/ry to path element
+				if("ellipse".equals(child.getName()))	{
+					double cx = Double.valueOf(child.getNsAttribute("android","cx").getValue());
+					double cy = Double.valueOf(child.getNsAttribute("android","cx").getValue());
+					double rx = Double.valueOf(child.getNsAttribute("android","rx").getValue());
+					double ry = Double.valueOf(child.getNsAttribute("android","ry").getValue());
+
+					double vh = Double.valueOf(rootElement.getNsAttribute("android","viewportHeight").getValue());
+
+					String pathData = "M"+ (cx-rx) +","+ (vh-cy) +" A"+ rx +","+ ry +" 0 1,0 "+ (cx+rx) +","+ (vh-cy);
+					pathData += (" A"+ rx +","+ ry +" 0 1,0 "+ (cx-rx) +","+ (vh-cy));
+
+					child.removeNsAttribute("android","cx"); 
+					child.removeNsAttribute("android","cy"); 
+					child.removeNsAttribute("android","rx"); 
+					child.removeNsAttribute("android","ry"); 
+
+					child.setName("path");
+					child.addNsAttribute("android","pathData",pathData);
+				}
+			}
 		}
 	}
 

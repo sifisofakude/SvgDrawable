@@ -560,7 +560,7 @@ public class Element implements Cloneable	{
 	}
 
 	public boolean removeNsAttribute(String ns,String name)	{
-		if(getAttributes().size() > 0)	{
+		if(getNsAttributes().size() > 0)	{
 			int len = getNsAttributes().size();
 			for(int i = 0; i < len; i ++)	{
 				NsAttribute attr = getNsAttributes().get(i);

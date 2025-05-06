@@ -16,7 +16,9 @@ usage: java -jar /path/to/svgdrawable.jar inputfile [outputfile] [options]
 
 options:
    --clean-duplicates      merges paths elements with same
-                           styling in to one path element.
+                           styling in to one path element. make sure your
+                           paths are using absolute coordinates to avoid any
+                           inconsistancies.
 
    --external-gradients    parses gradients from inpufile and
                            save them in a separate file,only works when
