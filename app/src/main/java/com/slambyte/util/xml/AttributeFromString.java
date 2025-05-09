@@ -233,7 +233,7 @@ public class AttributeFromString	{
 					value = "fill:" + ((opacity != null) ? "#" +value.substring(3):value);
 				}
 
-				if(opacity != null) value += ";fill-opacity:"+opacity;
+				if(opacity != null) value += ";opacity:"+opacity;
 				element.addAttribute("style",value);
 			}else {
 				Parser tmpParse = new Parser()	{
@@ -268,15 +268,16 @@ public class AttributeFromString	{
 			// AttributeFromString.urlRef = FILL_URL_REF;
 		}
 
-		if(name.equals("android:fillApha"))	{
+		if(name.equals("android:fillAlpha"))	{
+			System.out.println("wow alpha");
 			Attribute attr = element.getAttribute("style");
 			if(attr != null)	{
 				String tmpValue = attr.getValue();
-				tmpValue += ";fill-opacity:" + value;
+				tmpValue += ";opacity:" + value;
 
 				value = tmpValue;
 			}else	{
-				value = "fill-opacity:" + value;
+				value = "opacity:" + value;
 			}
 			element.addAttribute("style",value);
 		}
@@ -532,7 +533,7 @@ public class AttributeFromString	{
 					}
 				}
 
-				if(name.equals("fill-opacity"))	{
+				if(name.equals("opacity"))	{
 					if(value.equals("1")) continue;
 					
 					NsAttribute attr = element.getNsAttribute("android","fillColor");
