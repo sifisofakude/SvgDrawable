@@ -326,7 +326,7 @@ public class Parser	{
 					if(line.substring(i,i+1).equals("<")) start_index = i;
 					if(line.substring(i,i+1).equals(">")) end_index = i;
 
-					if(start_index > -1 && end_index > -1)	{
+					if(start_index > -1 && end_index > -1 && start_index < end_index)	{
 						lines.add(line.substring(start_index,end_index+1));
 						start_index = -1;
 						end_index = -1;

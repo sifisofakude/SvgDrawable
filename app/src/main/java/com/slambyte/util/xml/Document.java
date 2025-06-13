@@ -441,7 +441,10 @@ public class Document	{
 			for(int i = 0; i < children.size(); i++)	{
 				Element child = children.get(i);
 
-				if((!"circle".equals(child.getName()) || !"rect".equals(child.getName())) && child.hasChildren())	{
+				boolean isShape = "circle".equals(child.getName()) || "rect".equals(child.getName()) ||
+					"ellipse".equals(child.getName());
+
+				if(!isShape && child.hasChildren())	{
 					optimizeDrawable(child);
 				}
 
@@ -466,46 +469,67 @@ public class Document	{
 						ryString = "0";
 					}
 
+					if(rxString.equals("0") && !ryString.equals("0")) rxString = ryString;
+					if(!rxString.equals("0") && ryString.equals("0")) ryString = rxString;
+
 					double rx = Double.valueOf(rxString);
 					double ry = Double.valueOf(ryString);
 
-					if(child.hasNsAttribute("android","rx") || child.hasNsAttribute("android","ry"))	{
-						String pathData = "M"+ (x+rx) +","+ y +" ";
-						pathData += ("L"+ (x+width-rx) +","+ y +" ");
-						pathData += ("C"+ (x+width-rx+rx) +","+ y +" "+ (x+width) +","+ (y+ry) +" ");
-						pathData += ((x+width) +","+ (y+ry)+ " ");
-						pathData += ("L"+ (x+width) +","+ (y+height-ry) + " ");
-						pathData += ("C"+ (x+width) +","+ (y+height-ry+ry) +" ");
-						pathData += ((x+width-rx) +","+ (y+height) +" "+ (x+width-rx) +","+ (y+height) +" ");
-						pathData += ("L"+ (x+rx) +","+ (y+height) +" ");
-						pathData += ("C"+ (x+rx-ry) +","+ (y+height) +" "+ x +","+ (y+height-ry) +" ");
-						pathData += (x +","+ (y+height-ry) +" ");
-						pathData += ("L"+ x +","+ (y+ry) +" ");
-						pathData += ("C"+ x +","+ (y+ry-ry) +" "+ (x+rx) +","+ y +" "+ (x+rx) +","+ y);
+					String pathData = "M"+ (x+rx) +","+ y +" ";
+					pathData += ("L"+ (x+width-rx) +","+ y +" ");
+					pathData += ("C"+ (x+width-rx+rx) +","+ y +" "+ (x+width) +","+ (y+ry) +" ");
+					pathData += ((x+width) +","+ (y+ry)+ " ");
+					pathData += ("L"+ (x+width) +","+ (y+height-ry) + " ");
+					pathData += ("C"+ (x+width) +","+ (y+height-ry+ry) +" ");
+					pathData += ((x+width-rx) +","+ (y+height) +" "+ (x+width-rx) +","+ (y+height) +" ");
+					pathData += ("L"+ (x+rx) +","+ (y+height) +" ");
+					pathData += ("C"+ (x+rx-ry) +","+ (y+height) +" "+ x +","+ (y+height-ry) +" ");
+					pathData += (x +","+ (y+height-ry) +" ");
+					pathData += ("L"+ x +","+ (y+ry) +" ");
+					pathData += ("C"+ x +","+ (y+ry-ry) +" "+ (x+rx) +","+ y +" "+ (x+rx) +","+ y);
 
-						child.removeNsAttribute("android","x"); 
-						child.removeNsAttribute("android","y"); 
-						child.removeNsAttribute("android","rx"); 
-						child.removeNsAttribute("android","ry"); 
-						child.removeNsAttribute("android","width"); 
-						child.removeNsAttribute("android","height");
+					child.removeNsAttribute("android","x"); 
+					child.removeNsAttribute("android","y"); 
+					child.removeNsAttribute("android","rx"); 
+					child.removeNsAttribute("android","ry"); 
+					child.removeNsAttribute("android","width"); 
+					child.removeNsAttribute("android","height");
 
-						child.setName("path");
-						child.addNsAttribute("android","pathData",pathData); 
-					}
+					child.setName("path");
+					child.addNsAttribute("android","pathData",pathData); 
 				}
 
 				// Convert circle element containing rx/ry to path element
-				if("ellipse".equals(child.getName()))	{
+				if("ellipse".equals(child.getName()) || "circle".equals(child.getName()))	{
+					if(child.hasNsAttribute("android","r"))	{
+						String r = child.getNsAttribute("android","r").getValue();
+						
+						child.addNsAttribute("android","rx",r);
+						child.addNsAttribute("android","ry",r);
+
+						child.removeNsAttribute("android","r");
+					}
+
 					double cx = Double.valueOf(child.getNsAttribute("android","cx").getValue());
-					double cy = Double.valueOf(child.getNsAttribute("android","cx").getValue());
+					double cy = Double.valueOf(child.getNsAttribute("android","cy").getValue());
 					double rx = Double.valueOf(child.getNsAttribute("android","rx").getValue());
 					double ry = Double.valueOf(child.getNsAttribute("android","ry").getValue());
 
 					double vh = Double.valueOf(rootElement.getNsAttribute("android","viewportHeight").getValue());
 
-					String pathData = "M"+ (cx-rx) +","+ (vh-cy) +" A"+ rx +","+ ry +" 0 1,0 "+ (cx+rx) +","+ (vh-cy);
-					pathData += (" A"+ rx +","+ ry +" 0 1,0 "+ (cx-rx) +","+ (vh-cy));
+					double k = 0.5522847498;
+
+					// // horizontal offset
+					double ox = k * rx;
+
+					// // vertical offset
+					double oy = k * ry;
+					
+					String pathData = "M"+ (cx-rx) +","+ cy +" ";
+					pathData += ("C"+ (cx-rx) +","+ (cy-oy) +" "+ (cx-ox) +","+ (cy-ry) +" "+ cx +","+ (cy-ry) +" ");
+					pathData += ("C"+ (cx+ox) +","+ (cy-ry) +" "+ (cx+rx) +","+ (cy-oy) +" "+ (cx+rx) +","+ cy +" ");
+					pathData += ("C"+ (cx+rx) +","+ (cy+oy) +" "+ (cx+ox) +","+ (cy+ry) +" "+ cx +","+ (cy+ry) +" ");
+					pathData += ("C"+ (cx-ox) +","+ (cy+ry) +" "+ (cx-rx) +","+ (cy+oy) +" "+ (cx-rx) +","+ cy +" Z");
 
 					child.removeNsAttribute("android","cx"); 
 					child.removeNsAttribute("android","cy"); 

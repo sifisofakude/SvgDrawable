@@ -121,6 +121,10 @@ public class AttributeFromString	{
 			}
 		}
 
+		if(name.equals("opacity"))	{
+			styleElement(name + ":" + value);
+		}
+
 		if(name.equals("fill"))	{
 			styleElement(name + ":" + value);
 		}
@@ -233,7 +237,7 @@ public class AttributeFromString	{
 					value = "fill:" + ((opacity != null) ? "#" +value.substring(3):value);
 				}
 
-				if(opacity != null) value += ";opacity:"+opacity;
+				if(opacity != null) value += ";fill-opacity:"+opacity;
 				element.addAttribute("style",value);
 			}else {
 				Parser tmpParse = new Parser()	{
@@ -273,11 +277,11 @@ public class AttributeFromString	{
 			Attribute attr = element.getAttribute("style");
 			if(attr != null)	{
 				String tmpValue = attr.getValue();
-				tmpValue += ";opacity:" + value;
+				tmpValue += ";fill-opacity:" + value;
 
 				value = tmpValue;
 			}else	{
-				value = "opacity:" + value;
+				value = "fill-opacity:" + value;
 			}
 			element.addAttribute("style",value);
 		}
@@ -534,32 +538,12 @@ public class AttributeFromString	{
 				}
 
 				if(name.equals("opacity"))	{
-					if(value.equals("1")) continue;
-					
-					NsAttribute attr = element.getNsAttribute("android","fillColor");
-					// System.out.println(attr);
-					if(attr == null)	{
-						element.addNsAttribute("android","fillAlpha",value);
-					}else	{
-						String fillColor = attr.getValue();
-						String opacity = opacityFromRgbaHex(fillColor);
-					// System.out.println(opacity);
+					fillOpacity(value);
+					strokeOpacity(value);
+				}
 
-						if(opacity == null)	{
-							element.addNsAttribute("android","fillAlpha",value);
-							continue;
-						}
-
-						String color;
-						if(attr.getValue().length() == 7)	{
-							color = "#" + opacity + "" + value.substring(1);
-						}else if(attr.getValue().length() == 9)	{
-							color = "#" + opacity + value.substring(3);
-						}else	{
-							continue;
-						}
-						element.addNsAttribute("android","fillColor",color);
-					}
+				if(name.equals("fill-opacity"))	{
+					fillOpacity(value);
 				}
 
 				if(name.equals("stroke"))	{
@@ -589,32 +573,7 @@ public class AttributeFromString	{
 				}
 
 				if(name.equals("stroke-opacity"))	{
-					if(value.equals("1")) continue;
-				// continue;
-					NsAttribute attr = element.getNsAttribute("android","strokeColor");
-
-					if(attr == null)	{
-					// System.out.println(value);
-						element.addNsAttribute("android","strokeAlpha",value);
-					}else	{
-						String hex = attr.getValue();
-						String opacity = opacityFromRgbaHex(hex);
-
-						if(opacity == null)	{
-							element.addNsAttribute("android","strokeAlpha",value);
-							continue;
-						}
-
-						String color;
-						if(attr.getValue().length() == 7)	{
-							color = "#" + opacity + "" + value.substring(1);
-						}else if(attr.getValue().length() == 9)	{
-							color = "#" + opacity + value.substring(3);
-						}else	{
-							continue;
-						}
-						element.addNsAttribute("android","strokeColor",color);
-					}
+					strokeOpacity(value);
 				}
 
 				if(name.equals("stroke-width"))	{
@@ -686,23 +645,108 @@ public class AttributeFromString	{
 		
 	}
 
+	public void strokeOpacity(String value)	{
+		if(value.equals("1")) return;
+		
+		NsAttribute attr = element.getNsAttribute("android","strokeColor");
+		// System.out.println(attr);
+		if(attr == null)	{
+			element.addNsAttribute("android","strokeAlpha",value);
+		}else	{
+			String fillColor = attr.getValue();
+			String opacity = opacityFromRgbaHex(fillColor);
+		// System.out.println(opacity);
+
+			if(opacity == null)	{
+				element.addNsAttribute("android","srokeAlpha",value);
+				return;
+			}
+
+			String color;
+			if(attr.getValue().length() == 7)	{
+				color = "#" + opacity + "" + value.substring(1);
+			}else if(attr.getValue().length() == 9)	{
+				color = "#" + opacity + value.substring(3);
+			}else	{
+				return;
+			}
+			element.addNsAttribute("android","strokeColor",color);
+		}
+	}
+
+	public void fillOpacity(String value)	{
+		if(value.equals("1")) return;
+		
+		NsAttribute attr = element.getNsAttribute("android","fillColor");
+		// System.out.println(attr);
+		if(attr == null)	{
+			element.addNsAttribute("android","fillAlpha",value);
+		}else	{
+			String fillColor = attr.getValue();
+			String opacity = opacityFromRgbaHex(fillColor);
+		// System.out.println(opacity);
+
+			if(opacity == null)	{
+				element.addNsAttribute("android","fillAlpha",value);
+				return;
+			}
+
+			String color;
+			if(attr.getValue().length() == 7)	{
+				color = "#" + opacity + "" + value.substring(1);
+			}else if(attr.getValue().length() == 9)	{
+				color = "#" + opacity + value.substring(3);
+			}else	{
+				return;
+			}
+			element.addNsAttribute("android","fillColor",color);
+		}
+	}
+
 	public void transform(String transformation)	{
 		String key = null;
 		String value = null;
-		String translateX = null;
-		String translateY = null;
 
 		if(transformation.startsWith("translate"))	{
 			transformation = transformation.replaceAll("translate\\(|\\)","");
 			String[] translate = transformation.split(",");
 
-			translateX = translate[0];
+			if(translate.length == 0) return;
+
+			element.addNsAttribute("android","translateX",translate[0]);
 			if(translate.length == 2)	{
-				translateY = translate[1];
+				element.addNsAttribute("android","translateY",translate[1]);
 			}
 		}
-		if(translateX != null) element.addNsAttribute("android","translateX",translateX);
-		if(translateY != null) element.addNsAttribute("android","translateY",translateY);
+
+		if(transformation.startsWith("rotate"))	{
+			transformation = transformation.replaceAll("rotate\\(|\\)","");
+			String[] rotate = transformation.split(",");
+
+			if(rotate.length == 0) return;
+
+			element.addNsAttribute("android","rotate",rotate[0]);
+			if(rotate.length == 3)	{
+				element.addNsAttribute("android","pivotX",rotate[1]);
+				element.addNsAttribute("android","pivotY",rotate[2]);
+			}
+		}
+
+		if(transformation.startsWith("scale"))	{
+			transformation = transformation.replaceAll("scale\\(|\\)","");
+			String[] scale = transformation.split(",");
+
+			if(scale.length == 0) return;
+
+
+			if(scale.length == 1)	{
+				element.addNsAttribute("android","scaleX",scale[0]);
+				element.addNsAttribute("android","scaleY",scale[0]);
+			}else if(scale.length == 2) {
+				element.addNsAttribute("android","scaleX",scale[0]);
+				element.addNsAttribute("android","scaleY",scale[1]);
+			}
+		}
 	}
 
 	public String opacityToHex(String opacity)	{
