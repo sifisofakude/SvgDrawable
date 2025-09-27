@@ -19,9 +19,9 @@ package com.slambyte.util.xml;
 import java.util.ArrayList;
 
 public class ToDrawable	{
-	Document doc;
-	public ToDrawable(Document doc,String line)	{
-		this.doc = doc;
+	Document document;
+	public ToDrawable(Document document,String line)	{
+		this.document = document;
 		
 		if(line.substring(0,1).equals("<"))	{
 			String name = line.substring(1);
@@ -32,7 +32,7 @@ public class ToDrawable	{
 				element = new Element("vector");
 				element.addNsAttribute("xmlns","android","http://schemas.android.com/apk/res/android");
 
-				doc.rootElement = element;
+				document.rootElement = element;
 			}
 
 
@@ -50,6 +50,14 @@ public class ToDrawable	{
 
 			if(name.equals("rect"))	{
 				element = new Element("rect");
+			}
+
+			if(name.equals("polyline"))	{
+				element = new Element("polyline");
+			}
+
+			if(name.equals("line"))	{
+				element = new Element("line");
 			}
 
 			if(name.equals("ellipse"))	{
@@ -71,35 +79,35 @@ public class ToDrawable	{
 					element = new Element("gradient");
 					element.addNsAttribute("android","type",type);
 
-					Element root = doc.getElement();
+					Element root = document.getElement();
 				}
 			}
 
 			if(element == null)	{
-				doc.currentTag = Document.ELEMENT_TAG_UNKNOWN;
+				document.currentTag = Document.ELEMENT_TAG_UNKNOWN;
 			}
 
 			if(name.substring(0,1).equals("/"))	{
 				name = name.substring(1,name.length()-1);
 				
-				if(doc.knownTagOpen())	{
-					doc.closeElement(name);
+				if(document.knownTagOpen())	{
+					document.closeElement(name);
 				}
 			}
 
 			if(element != null)	{
-				doc.setCurrentElement(element);
+				document.setCurrentElement(element);
 			}
 		}else	{
-			if(doc.knownTagOpen())	{
-				new AttributeFromString(doc,line,true);
+			if(document.knownTagOpen())	{
+				new AttributeFromString(document,line,true);
 
 				int len = line.length();
 				if(line.substring(len-1).equals(">"))	{
 					if(line.substring(len-2,len-1).equals("/"))	{
-						if(doc.getElement() != null)	{
-							String name = doc.getElement().getName();
-							doc.closeElement(name);
+						if(document.getElement() != null)	{
+							String name = document.getElement().getName();
+							document.closeElement(name);
 						}
 					}
 				}

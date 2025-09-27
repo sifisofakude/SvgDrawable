@@ -70,7 +70,7 @@ public class Parser	{
 			}else if(currentProcess == Parser.CONVERTING_TO_DRAWABLE)	{
 				output += "xml";
 			}else	{
-				output = null;
+				output += extension;
 			}
 		}
 
@@ -80,13 +80,7 @@ public class Parser	{
 			while((line = br.readLine()) != null)	{
 				processLine(line);
 			}
-			Element el = doc.getElement();
-			while(el.getParent() != null)	{
-				Element parent = el.getParent();
-
-				// if(el.getName().equals(parent.getName())) break;
-				el = parent;
-			}
+			Element el = doc.rootElement;
 
 			if(currentProcess == Parser.CONVERTING_TO_DRAWABLE)	{
 				doc.optimizeDrawable(el);

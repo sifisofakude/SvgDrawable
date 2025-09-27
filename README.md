@@ -5,7 +5,7 @@ SVGDrawable is a java CLI/library for converting SVG images to Android Vector Dr
 ## Features
 - Can parse gradients from external file when converting to SVG.
 - Save gradients to external file when converting to Android Drawable.
-- Merge duplicated path elements.
+- Merge path elements with same style attributes.
 ## Usage
 
 ### #CLI
@@ -32,12 +32,13 @@ options:
 ```
 
 ### #As Library
-#### Parsing A File
+#### Converting files
 ```
 import com.slambyte.util.xml.Parser;
 
 Parser parser = new Parser();
-parser.parseFile("/path/to/file",process);
+parser.parseFile("/path/to/inputfile",process);
+parser.writeToFile("path/to/outputfile");
 ```
 `process` can be any of the following:
 ```

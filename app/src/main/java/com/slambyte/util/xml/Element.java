@@ -199,6 +199,7 @@ public class Element implements Cloneable	{
 		}
 	}
 
+	// Exact match 
 	public boolean equals(Element element)	{
 		boolean result = super.equals(element);
 
@@ -296,6 +297,7 @@ public class Element implements Cloneable	{
 		return result;
 	}
 
+	// Match with excluded attributes
 	public boolean equals(Element element,HashMap<Integer,List<String>> exclude)	{
 		boolean result = super.equals(element);
 

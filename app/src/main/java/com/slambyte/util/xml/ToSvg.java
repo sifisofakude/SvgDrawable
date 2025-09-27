@@ -17,9 +17,9 @@
 package com.slambyte.util.xml;
 
 public class ToSvg	{
-	Document doc;
-	public ToSvg(Document doc,String line)	{
-		this.doc = doc;
+	Document document;
+	public ToSvg(Document document,String line)	{
+		this.document = document;
 		
 		if(line.substring(0,1).equals("<"))	{
 			String name = line.substring(1);
@@ -30,7 +30,7 @@ public class ToSvg	{
 				element = new Element("svg");
 				element.addAttribute("xmlns","http://www.w3.org/2000/svg");
 
-				doc.rootElement = element;
+				document.rootElement = element;
 			}
 
 			if(name.equals("path"))	{
@@ -66,39 +66,39 @@ public class ToSvg	{
 				name = name.substring(1,name.length()-1);
 
 				if(name.equals("path"))	{
-					checkFillColor(doc.getElement());
+					checkFillColor(document.getElement());
 				}
 
 				if(element == null)	{
-					doc.currentTag = Document.ELEMENT_TAG_UNKNOWN;
+					document.currentTag = Document.ELEMENT_TAG_UNKNOWN;
 				}
 					
-				if(doc.knownTagOpen())	{
-					doc.closeElement(name);
-					doc.isAcceptingChildren(false);
+				if(document.knownTagOpen())	{
+					document.closeElement(name);
+					document.isAcceptingChildren(false);
 
 					element = null;
 				}
 			}
 
 			if(element != null)	{
-				doc.setCurrentElement(element);
+				document.setCurrentElement(element);
 			}
 		}else	{
-			if(doc.knownTagOpen())	{
-				new AttributeFromString(doc,line,true);
+			if(document.knownTagOpen())	{
+				new AttributeFromString(document,line,true);
 
 				int len = line.length();
-				if(doc.currentTag != Document.ELEMENT_TAG_AAPT)	{
+				if(document.currentTag != Document.ELEMENT_TAG_AAPT)	{
 					if(line.substring(len-1).equals(">"))	{
 						if(line.substring(len-2,len-1).equals("/"))	{
-							String name = doc.getElement().getName();
+							String name = document.getElement().getName();
 							if(name.equals("path"))	{
-								checkFillColor(doc.getElement());
+								checkFillColor(document.getElement());
 							}
-							doc.closeElement(name);
+							document.closeElement(name);
 						}else	{
-							doc.acceptChildren();
+							document.acceptChildren();
 						}
 					}
 				}

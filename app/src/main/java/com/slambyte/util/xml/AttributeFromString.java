@@ -31,7 +31,7 @@ public class AttributeFromString	{
 	final int STROKE_URL_REF = 2;
 	final int NO_URL_REF = 3;
 
-	public static int urlRef;;
+	public static int urlRef;
 
 	public static String incompleteName = "";
 	public static String incompleteAttribute = "";
@@ -446,6 +446,11 @@ public class AttributeFromString	{
 
 		if(name.equals("offset"))	{
 			element.addNsAttribute("android","offset",value);
+		}
+
+		if(name.equals("points"))	{
+			// System.out.println(value);
+			element.addNsAttribute("android",name,value);
 		}
 
 		if(name.equals("xlink:href"))	{

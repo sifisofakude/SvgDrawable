@@ -56,6 +56,8 @@ public class Document	{
 	public static final int ELEMENT_TAG_RECT = 9;
 	public static final int ELEMENT_TAG_CIRCLE = 10;
 	public static final int ELEMENT_TAG_ELLIPSE = 11;
+	public static final int ELEMENT_TAG_LINE = 12;
+	public static final int ELEMENT_TAG_POLYLINE = 13;
 
 	public int currentTag = Document.ELEMENT_TAG_UNKNOWN;
 
@@ -144,18 +146,23 @@ public class Document	{
 			case "aapt:attr":
 				tag = Document.ELEMENT_TAG_AAPT;
 				break;
+			case "polyline":
+				tag = Document.ELEMENT_TAG_POLYLINE;
+				break;
+			case "line":
+				tag = Document.ELEMENT_TAG_LINE;
+				break;
 			default:
 				tag = Document.ELEMENT_TAG_UNKNOWN;
 		}
 		return tag;
 	}
 
-	
-
 	public boolean knownTagOpen()	{
 		boolean isTagKnown = false;
 		
 		switch(currentTag)	{
+			case Document.ELEMENT_TAG_LINE:
 			case Document.ELEMENT_TAG_STOP:
 			case Document.ELEMENT_TAG_PATH:
 			case Document.ELEMENT_TAG_ROOT:
@@ -165,6 +172,7 @@ public class Document	{
 			case Document.ELEMENT_TAG_RECT:
 			case Document.ELEMENT_TAG_CIRCLE:
 			case Document.ELEMENT_TAG_ELLIPSE:
+			case Document.ELEMENT_TAG_POLYLINE:
 			case Document.ELEMENT_TAG_GRADIENT:
 				isTagKnown = true;
 				break;
@@ -539,6 +547,46 @@ public class Document	{
 					child.setName("path");
 					child.addNsAttribute("android","pathData",pathData);
 				}
+
+				if("line".equals(child.getName()))	{
+					double x1 = Double.valueOf(child.getNsAttribute("android","startX").getValue());
+					double y1 = Double.valueOf(child.getNsAttribute("android","startY").getValue());
+					double x2 = Double.valueOf(child.getNsAttribute("android","endX").getValue());
+					double y2 = Double.valueOf(child.getNsAttribute("android","endY").getValue());
+
+					String pathData = "M "+ x1 +","+ y1 +" "+ x2 +","+ y2;
+
+					child.removeNsAttribute("android","startX");
+					child.removeNsAttribute("android","startY");
+					child.removeNsAttribute("android","endX");
+					child.removeNsAttribute("android","endY");
+
+					child.setName("path");
+					child.addNsAttribute("android","pathData",pathData); 
+				}
+
+				if("polyline".equals(child.getName()))	{
+					String points = child.getNsAttribute("android","points").getValue();
+					points = points.replace(", "," ").replace(","," ");
+					System.out.println(points);
+
+					String[] actualPoints = points.split(" ");
+
+					String pathData = "M ";
+					for(int j = 0; j < actualPoints.length; j++)	{
+						if(j%2 == 0)	{
+							pathData += (actualPoints[j] +",");
+						}else {
+							pathData += (actualPoints[j] +" ");
+						}
+					}
+
+					pathData = pathData.substring(0,pathData.length() - 1);
+					child.removeNsAttribute("android","points");
+
+					child.setName("path");
+					child.addNsAttribute("android","pathData",pathData);
+				}
 			}
 		}
 	}
@@ -556,7 +604,7 @@ public class Document	{
 				try {
 					writtingToFile(new PrintStream(path+"/res/drawable/"+id),shape,0);
 				}catch(Exception e)	{
-					System.out.println(e);
+					System.out.println(e.getMessage());
 				}
 			}
 
