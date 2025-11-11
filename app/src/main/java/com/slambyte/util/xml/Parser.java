@@ -78,11 +78,25 @@ public class Parser	{
 			BufferedReader br = new BufferedReader(new FileReader(input));
 			String line;
 			while((line = br.readLine()) != null)	{
+				// System.out.println(line);
 				processLine(line);
 			}
 			Element el = doc.rootElement;
 
 			if(currentProcess == Parser.CONVERTING_TO_DRAWABLE)	{
+				NsAttribute widthAttr = el.getNsAttribute("android","width");
+				if(widthAttr == null)	{
+					NsAttribute vw = el.getNsAttribute("android","viewportWidth");
+					el.addNsAttribute("android","width",vw.getValue() +"dp");
+				}
+
+				NsAttribute heightAttr = el.getNsAttribute("android","height");
+				if(heightAttr == null)	{
+					NsAttribute vh = el.getNsAttribute("android","viewportHeight");
+					el.addNsAttribute("android","height",vh.getValue() +"dp");
+				}
+
+				// System.out.println(el.getNsAttribute("android","width");
 				doc.optimizeDrawable(el);
 			}
 
@@ -150,6 +164,7 @@ public class Parser	{
 			BufferedReader br = new BufferedReader(new FileReader(input));
 			String line;
 			while((line = br.readLine()) != null)	{
+
 				processLine(line);
 			}
 			Element element = doc.getElement();
@@ -233,20 +248,6 @@ public class Parser	{
 					}
 				}
 			}
-		}else	{
-			// System.out.println(line);
-			ElementOrAttribute ea = new ElementOrAttribute(line);
-
-			String tmpLine;
-			while((tmpLine = ea.getLine()) != null)	{
-				if(currentProcess == Parser.CONVERTING_TO_DRAWABLE)	{
-					new ToDrawable(doc,tmpLine);
-				}else if(currentProcess == Parser.CONVERTING_TO_SVG)	{
-					new ToSvg(doc,tmpLine);
-				}else	{
-					new RawSvg(doc,tmpLine);
-				}
-			}
 		}
 	}
 
@@ -266,12 +267,11 @@ public class Parser	{
 			
 			for(int i = 0; i < line.length(); i ++)	{
 				String character = line.substring(i,i+1);
-			// System.out.println(character);
 
 				if(character.equals("\"")) quote_hit = quote_hit ? false:true;
 
 				String EOL = line.substring(i+1);
-				boolean isLineEnded = (EOL.equals("/>") || EOL.equals(">")) ? true:false;
+				boolean isLineEnded = EOL.equals(">") ? true:false;
 			
 				if(character.equals(" ") && !isLineEnded)	{
 					if(!quote_hit) end_index = i;
@@ -282,6 +282,7 @@ public class Parser	{
 				if(start_index > -1 && end_index > -1)	{
 					if(start_index > end_index) continue;
 					lines.add(line.substring(start_index,end_index));
+					// System.out.println(line.substring(start_index,end_index));
 					
 					start_index = -1;
 					end_index = -1;
@@ -289,6 +290,7 @@ public class Parser	{
 
 				if(start_index > -1 && end_index == -1 && line.length() == i+1)	{
 					lines.add(line.substring(start_index));
+			// System.out.println(line);
 				}
 			}
 		}
@@ -315,16 +317,27 @@ public class Parser	{
 			if(line != null && !line.isEmpty())	{
 				int end_index = -1;
 				int start_index = -1;
-				for(int i = 0; i < line.length(); i ++)	{
-					if(start_index > end_index) continue;
-					if(line.substring(i,i+1).equals("<")) start_index = i;
-					if(line.substring(i,i+1).equals(">")) end_index = i;
 
-					if(start_index > -1 && end_index > -1 && start_index < end_index)	{
-						lines.add(line.substring(start_index,end_index+1));
-						start_index = -1;
-						end_index = -1;
+				start_index = line.indexOf("<");
+				end_index = line.indexOf(">");
+
+				if(start_index > -1 && start_index < end_index)	{
+					String tmpLine = line.substring(start_index,end_index+1);
+					lines.add(tmpLine);
+					if(end_index+1 < line.length())	{
+						String remainingLine = line.substring(end_index+1);
+
+						SearchForElements elements = new SearchForElements(remainingLine);
+						if(elements.length() > 0) lines.addAll(elements.getAllLines());
 					}
+				}else if (start_index == -1 || end_index == -1) {
+					lines.add(line);
+				}else if (start_index > end_index) {
+					lines.add(line.substring(0,end_index+1));
+					String remainingLine = line.substring(end_index+1);
+
+					SearchForElements elements = new SearchForElements(remainingLine);
+					if(elements.length() > 0) lines.addAll(elements.getAllLines());
 				}
 			}
 		}
@@ -336,6 +349,12 @@ public class Parser	{
 				return line;
 			}
 			return null;
+		}
+
+		public ArrayList<String> getAllLines()	{
+			ArrayList<String> tmpLines = (ArrayList<String>) lines.clone();
+			lines.clear();
+			return tmpLines;
 		}
 
 		public int length()	{

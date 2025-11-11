@@ -101,7 +101,7 @@ public class AttributeFromString	{
 
 			double vpWidthDouble = Double.valueOf(values[2]);
 			String vpWidth = String.format("%.2f",vpWidthDouble).replace(",",".");
-
+// System.out.println(value);
 			double vpHeightDouble = Double.valueOf(values[3]);
 			String vpHeight = String.format("%.2f",vpHeightDouble).replace(",",".");
 
@@ -273,7 +273,7 @@ public class AttributeFromString	{
 		}
 
 		if(name.equals("android:fillAlpha"))	{
-			System.out.println("wow alpha");
+			// System.out.println("wow alpha");
 			Attribute attr = element.getAttribute("style");
 			if(attr != null)	{
 				String tmpValue = attr.getValue();
@@ -449,7 +449,7 @@ public class AttributeFromString	{
 		}
 
 		if(name.equals("points"))	{
-			// System.out.println(value);
+			// System.out.println(valuesr);
 			element.addNsAttribute("android",name,value);
 		}
 
@@ -663,7 +663,7 @@ public class AttributeFromString	{
 		// System.out.println(opacity);
 
 			if(opacity == null)	{
-				element.addNsAttribute("android","srokeAlpha",value);
+				element.addNsAttribute("android","strokeAlpha",value);
 				return;
 			}
 
