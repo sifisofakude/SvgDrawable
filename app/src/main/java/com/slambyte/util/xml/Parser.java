@@ -1,217 +1,41 @@
-/*
- * Copyright 2025 Sifiso Fakude
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.slambyte.util.xml;
 
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.BufferedReader;
-import java.io.LineNumberReader;
-import java.io.InputStreamReader;
 
 import java.nio.file.Path;
 
 import java.util.ArrayList;
 
 public class Parser	{
-	public static final int CONVERTING_TO_SVG = 1;
-	public static final int CONVERTING_TO_DRAWABLE = 2;
-	public static final int NOT_CONVERTING = 3;
-
-	private int currentProcess = Parser.NOT_CONVERTING;
 	Document doc;
 
 	public Parser()	{
 		 doc = Document.getInstance();
-	}
-
-	public void setCurrentProcess(int process)	{
-		switch(process)	{
-			case Parser.CONVERTING_TO_DRAWABLE:
-			case Parser.CONVERTING_TO_SVG:
-				currentProcess = process;
-				break;
-			default:
-				currentProcess = Parser.NOT_CONVERTING;
-		}
 	}
 	
 	public void parseFile(String input,String output,ArrayList<String> options)	{
 		if(input == null || input.isEmpty()) return;
 
 		String extension = input.substring(input.length()-3);
-		if(extension.equals("svg"))	{
-			currentProcess = Parser.CONVERTING_TO_DRAWABLE;
-		}else if(extension.equals("xml"))	{
-			currentProcess = Parser.CONVERTING_TO_SVG;
-		}else 	{
-			currentProcess = Parser.NOT_CONVERTING;
-		}
 
 		if(output == null)	{
 			output = input.substring(0,input.length()-3);
-			if(currentProcess == Parser.CONVERTING_TO_SVG)	{
+			if(extension.equals("xml"))	{
 				output += "svg";
-			}else if(currentProcess == Parser.CONVERTING_TO_DRAWABLE)	{
+			}else if(extension.equals("svg"))	{
 				output += "xml";
 			}else	{
 				output += extension;
 			}
 		}
 
-		try	{
-			BufferedReader br = new BufferedReader(new FileReader(input));
-			String line;
-			while((line = br.readLine()) != null)	{
-				// System.out.println(line);
-				processLine(line);
-			}
-			Element el = doc.rootElement;
-
-			if(currentProcess == Parser.CONVERTING_TO_DRAWABLE)	{
-				NsAttribute widthAttr = el.getNsAttribute("android","width");
-				if(widthAttr == null)	{
-					NsAttribute vw = el.getNsAttribute("android","viewportWidth");
-					el.addNsAttribute("android","width",vw.getValue() +"dp");
-				}
-
-				NsAttribute heightAttr = el.getNsAttribute("android","height");
-				if(heightAttr == null)	{
-					NsAttribute vh = el.getNsAttribute("android","viewportHeight");
-					el.addNsAttribute("android","height",vh.getValue() +"dp");
-				}
-
-				// System.out.println(el.getNsAttribute("android","width");
-				doc.optimizeDrawable(el);
-			}
-
-			if(options != null && options.size() > 0 && "vector".equals(el.getName()))	{
-				doc.gradientsLinked = false;
-
-				Path file = new File(input).toPath();
-
-				for(String option : options)	{
-					switch(option)	{
-					case "--clean-duplicates":
-						doc.cleanDuplicates(el);
-						break;
-					case "--split-long-paths":
-						doc.splitPaths(el);
-						break;
-					case "--external-gradients":
-						doc.saveGradients(el,file.getParent().toString());
-						break;
-					}
-				}
-			}
-
-			if(doc.gradientsLinked)	{
-				doc.populateAapts();
-				NsAttribute attr = new NsAttribute("xmlns","aapt","http://schemas.android.com/aapt");
-				el.getNsAttributes().add(1,attr);
-				doc.gradients.clear();
-			}
-
-			if(doc.gradients.size() > 0 && "svg".equals(el.getName()))	{
-				el.addNsAttribute("xmlns","xlink","http://www.w3.org/1999/xlink");
-				Element tmpElement = new Element("defs");
-				tmpElement.addAttribute("id","defs1");
-				ArrayList<Element> children = el.getChildren();
-				children.add(0,tmpElement);
-				for(Element elem : doc.gradients)	{
-					tmpElement.addChild(elem);
-				}
-			}
-
-			// doc.printFormatted(el,0);
-			if(options.contains("--external-gradients"))	{
-				Path path = new File(input).toPath();
-				Path parent = path.getParent();
-
-				output = (parent != null ? parent.toString()+"/":"")+"res/drawable/"+output;
-			}
-			doc.writeToFile(output);
-		}catch(IOException e)	{}
-	}
-	
-	public void parseFile(String input,int process)	{
-		if(input == null || input.replaceAll("\\s\\|\\t\\","").isEmpty()) return;
-
-		if(process == Parser.CONVERTING_TO_DRAWABLE)	{
-			currentProcess = Parser.CONVERTING_TO_DRAWABLE;
-		}else if(process == Parser.CONVERTING_TO_SVG)	{
-			currentProcess = Parser.CONVERTING_TO_SVG;
-		}else 	{
-			currentProcess = Parser.NOT_CONVERTING;
+		if(extension.equals("svg"))	{
+			new ToDrawable(doc,input,output);
+		}else {
+			new ToSvg(doc,input,output);
 		}
 
-		try	{
-			BufferedReader br = new BufferedReader(new FileReader(input));
-			String line;
-			while((line = br.readLine()) != null)	{
-
-				processLine(line);
-			}
-			Element element = doc.getElement();
-			while(element.getParent() != null)	{
-				element = element.getParent();
-			}
-
-			Element tmpElement = new Element("g");
-			tmpElement.addAttribute("id","svglite_layer1");
-
-			ArrayList<Element> children = element.getChildren();
-			tmpElement.addChildren(children);
-			children.clear();
-			element.addChild(tmpElement);
-
-			if(doc.gradientsLinked)	{
-				doc.gradients.clear();
-			}
-
-			if(doc.gradients.size() > 0)	{
-				doc.unlinkGradients();
-				element.addNsAttribute("xmlns","xlink","http://www.w3.org/1999/xlink");
-				tmpElement = new Element("defs");
-				tmpElement.addAttribute("id","defs1");
-				
-				children = element.getChildren();
-				children.add(0,tmpElement);
-				for(Element elem : doc.gradients)	{
-					tmpElement.addChild(elem);
-				}
-			}
-		}catch(IOException e)	{}
-	}
-
-	public void createSvgSkeleton(String width,String height)	{
-		if(width == null || width.isEmpty()) return;
-		if(height == null || height.isEmpty()) return;
-		
-		Element element = new Element("svg");
-		element.addAttribute("xmlns","http://www.w3.org/2000/svg");
-		element.addAttribute("width",width);
-		element.addAttribute("height",height);
-
-		String viewBox = String.format("0 0 %s %s",width,height);
-		element.addAttribute("viewBox",viewBox);
-
-		doc.setCurrentElement(element);
+		doc.printFormatted(doc.rootElement,0);
 	}
 
 	public boolean writeToFile(String path)	{
@@ -223,142 +47,6 @@ public class Parser	{
 	}
 
 	public Element getElement()	{
-		return doc.getElement();
-	}
-
-	public void processLine(String line)	{
-		if(line == null || line.isEmpty()) return;
-
-		line = line.trim();
-		
-		SearchForElements elements = new SearchForElements(line);
-		if(elements.length() > 0)	{
-			String tmpLine;
-			while((tmpLine = elements.getLine()) != null)	{
-				ElementOrAttribute ea = new ElementOrAttribute(tmpLine);
-
-				String tmpLineII;
-				while((tmpLineII = ea.getLine()) != null)	{
-					if(currentProcess == Parser.CONVERTING_TO_DRAWABLE)	{
-						new ToDrawable(doc,tmpLineII);
-					}else if(currentProcess == Parser.CONVERTING_TO_SVG)	{
-						new ToSvg(doc,tmpLineII);
-					}else	{
-						new RawSvg(doc,tmpLineII);
-					}
-				}
-			}
-		}
-	}
-
-	public class ElementOrAttribute	{
-		ArrayList<String> lines = new ArrayList<String>();
-
-		public ElementOrAttribute(String line)	{
-			boolean quote_hit = false;
-			boolean space_hit = false;
-			String incomplete_line = "";
-
-			int start_index = -1;
-			int end_index = -1;
-
-			String tmpLine;
-
-			
-			for(int i = 0; i < line.length(); i ++)	{
-				String character = line.substring(i,i+1);
-
-				if(character.equals("\"")) quote_hit = quote_hit ? false:true;
-
-				String EOL = line.substring(i+1);
-				boolean isLineEnded = EOL.equals(">") ? true:false;
-			
-				if(character.equals(" ") && !isLineEnded)	{
-					if(!quote_hit) end_index = i;
-				}else	{
-					if(start_index == -1) start_index = i;
-				}
-
-				if(start_index > -1 && end_index > -1)	{
-					if(start_index > end_index) continue;
-					lines.add(line.substring(start_index,end_index));
-					// System.out.println(line.substring(start_index,end_index));
-					
-					start_index = -1;
-					end_index = -1;
-				}
-
-				if(start_index > -1 && end_index == -1 && line.length() == i+1)	{
-					lines.add(line.substring(start_index));
-			// System.out.println(line);
-				}
-			}
-		}
-
-		public String getLine()	{
-			if(lines.size() > 0)	{
-				String tmpLine = lines.get(0);
-				lines.remove(0);
-				
-				return tmpLine;
-			}
-			return null;
-		}
-
-		public int length()	{
-			return lines.size();
-		}
-	}
-
-	public class SearchForElements	{
-		ArrayList<String> lines = new ArrayList<String>();
-		
-		public SearchForElements(String line)	{
-			if(line != null && !line.isEmpty())	{
-				int end_index = -1;
-				int start_index = -1;
-
-				start_index = line.indexOf("<");
-				end_index = line.indexOf(">");
-
-				if(start_index > -1 && start_index < end_index)	{
-					String tmpLine = line.substring(start_index,end_index+1);
-					lines.add(tmpLine);
-					if(end_index+1 < line.length())	{
-						String remainingLine = line.substring(end_index+1);
-
-						SearchForElements elements = new SearchForElements(remainingLine);
-						if(elements.length() > 0) lines.addAll(elements.getAllLines());
-					}
-				}else if (start_index == -1 || end_index == -1) {
-					lines.add(line);
-				}else if (start_index > end_index) {
-					lines.add(line.substring(0,end_index+1));
-					String remainingLine = line.substring(end_index+1);
-
-					SearchForElements elements = new SearchForElements(remainingLine);
-					if(elements.length() > 0) lines.addAll(elements.getAllLines());
-				}
-			}
-		}
-
-		public String getLine()	{
-			if(lines.size() > 0)	{
-				String line = lines.get(0);
-				lines.remove(0);
-				return line;
-			}
-			return null;
-		}
-
-		public ArrayList<String> getAllLines()	{
-			ArrayList<String> tmpLines = (ArrayList<String>) lines.clone();
-			lines.clear();
-			return tmpLines;
-		}
-
-		public int length()	{
-			return lines.size();
-		}
+		return doc.rootElement;
 	}
 }
