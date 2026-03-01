@@ -16,7 +16,7 @@ public class ToSvg	{
 
 	String linkValue = null;
 
-	public ToSvg(Document document,String input, String output)	{
+	public ToSvg(Document document,String input)	{
 		this.document = document;
 
 		defs = new Element("defs");
@@ -90,9 +90,9 @@ public class ToSvg	{
 				element = new Element("path");
 				break;
 
-			case "aapt":
+			case "aapt:attr":
 				element = new Element("aapt");
-				document.rootElement.addAttribute("xmlns:link","http://www.w3.org/1999/xlink");
+				document.rootElement.addAttribute("xmlns:xlink","http://www.w3.org/1999/xlink");
 				break;
 
 			case "item":
@@ -110,28 +110,40 @@ public class ToSvg	{
 
 				if("aapt".equals(element.getName()))	{
 					gradients.addAll(parseChildren(child.getChildNodes()));
+					System.out.println(gradients.size());
 					// document.printFormatted((Element) result.get(result.size()-1),0);
 					continue;
 				}
 
-				if(linkValue != null && !element.getName().contains("Gradient") && !"stop".equals(element.getName()))	{
+				boolean isLinkElement = linkValue != null && !element.getName().contains("Gradient") 
+					&& !"stop".equals(element.getName()) && !"aapt".equals(element.getName());
+
+				if(isLinkElement)	{
 					Element tmpElement = (Element) result.get(result.size() - 1);
 					styleElement(tmpElement,linkValue);
 					linkValue = null;
 				}
 
+
 				if(element.getName().contains("Gradient") && linkValue != null)	{
-					String gradientId = element.getAttribute("id").getValue();
+					String gradientId = null;
+					if(!element.hasAttribute("id"))	{
+						gradientId = element.getName() +""+ (Math.round(Math.random()*9999)+1000);
+						element.addAttribute("id",gradientId);
+					}else {
+						gradientId = element.getAttribute("id").getValue();
+					}
 					linkValue = linkValue +": url(#"+ gradientId +")";
 				}
 
 				Attribute styleAttr = element.getAttribute("style");
 				if(styleAttr != null)	{
 					String style = styleAttr.getValue();
-					if(!style.contains("fill:"))	{
+					if(!style.contains("fill:") && !"stop".equals(element.getName()))	{
 						styleAttr.setValue(style +";fill: none");
 					}
 				}
+
 				result.add(element);
 				
 				element.addChildren(parseChildren(child.getChildNodes()));
@@ -142,6 +154,8 @@ public class ToSvg	{
 
 	public void setAttributes(Element element, NamedNodeMap attributes)	{
 		if(element == null || attributes == null) return;
+
+		String transformation = null;
 
 		for(int i = 0; i < attributes.getLength(); i ++)	{
 			Node attr = attributes.item(i);
@@ -211,6 +225,70 @@ public class ToSvg	{
 			if(name.equals("strokeLineJoin"))	{
 				styleElement(element,name +":"+ value);
 			}
+
+			if(name.equals("translateX"))	{
+				if(transformation == null)	{
+					transformation = "translate("+ value +",y)";
+				}else 	{
+					transformElement(element, transformation.replace("x",value));
+					transformation = null;
+				}
+			}
+
+			if(name.equals("translateY"))	{
+				if(transformation == null)	{
+					transformation = "translate(x,"+ value +")";
+				}else 	{
+					transformElement(element, transformation.replace("y",value));
+					transformation = null;
+				}
+			}
+
+			if(name.equals("scaleY"))	{
+				if(transformation == null)	{
+					transformation = "scale(x,"+ value +")";
+				}else 	{
+					transformElement(element, transformation.replace("y",value));
+					transformation = null;
+				}
+			}
+
+			if(name.equals("scaleX"))	{
+				if(transformation == null)	{
+					transformation = "scale("+ value +",y)";
+				}else 	{
+					transformElement(element, transformation.replace("x",value));
+					transformation = null;
+				}
+			}
+
+			if(name.equals("pivotX"))	{
+				if(transformation == null)	{
+					transformation = "rotate(r,"+ value +",py)";
+				}else 	{
+					transformation = transformation.replace("px",value);
+				}
+			}
+
+			if(name.equals("pivotY"))	{
+				if(transformation == null)	{
+					transformation = "rotate(r,px,"+ value +")";
+				}else 	{
+					transformation = transformation.replace("py",value);
+				}
+			}
+
+			if(name.equals("rotate"))	{
+				if(transformation == null)	{
+					transformation = "rotate("+ value +")";
+					transformElement(element,transformation);
+					transformation = null;
+				}else 	{
+					transformElement(element, transformation.replace("(r","("+value));
+					transformation = null;
+				}
+			}
+			System.out.println(transformation);
 		}
 	}
 
@@ -239,7 +317,7 @@ public class ToSvg	{
 			}else {
 				String opacity = document.opacityFromRgbaHex(value);
 				if(opacity == null) style = "fill: "+ value;
-				else style = "fill: "+ value.substring(3) +";fill-opacity: "+ opacity;
+				else style = "fill: #"+ value.substring(3) +";fill-opacity: "+ opacity;
 			}
 		}
 
@@ -249,7 +327,7 @@ public class ToSvg	{
 			}else {
 				String opacity = document.opacityFromRgbaHex(value);
 				if(opacity == null) style = "stroke: "+ value;
-				else style = "stroke: "+ value.substring(3) +";stroke-opacity: "+ opacity;
+				else style = "stroke: #"+ value.substring(3) +";stroke-opacity: "+ opacity;
 			}
 		}
 
@@ -277,47 +355,11 @@ public class ToSvg	{
 	public void transformElement(Element element, String transformation)	{
 		if(element == null || transformation == null || transformation.isEmpty()) return;
 
-		String[] transformations = transformation.replace(", ",",").split(" ");
-		for(int i = 0; i < transformations.length; i ++)	{
-			String[] values = transformations[i].replace("("," ").replace(")","").split(" ");
-
-			String name = values[0];
-			String value = values[1];
-
-			if(name.equals("translate"))	{
-				String[] translation = value.split(",");
-
-				element.addNsAttribute("android","translateX",translation[0]);
-				element.addNsAttribute("android","translateY",translation[0]);
-
-				if(translation.length == 2)	{
-					element.addNsAttribute("android","translateY",translation[1]);
-				}
-			}
-
-			if(name.equals("rotate"))	{
-				String[] rotation = value.split(",");
-
-				if(rotation.length == 3)	{
-					float px = Float.valueOf(rotation[1]);
-					float py = Float.valueOf(rotation[2]);
-
-					element.addNsAttribute("android","pivotX",rotation[1]);
-					element.addNsAttribute("android","pivotY",rotation[2]);
-				}
-				element.addNsAttribute("android","rotate",rotation[0]);
-			}
-
-			if(name.equals("scale"))	{
-				String[] scale = value.split(",");
-
-				element.addNsAttribute("android","scaleX",scale[0]);
-				element.addNsAttribute("android","scaleY",scale[0]);
-
-				if(scale.length == 2)	{
-					element.addNsAttribute("android","scaleY",scale[1]);
-				}
-			}
+		Attribute transform = element.getAttribute("transform");
+		if(transform == null)	{
+			element.addAttribute("transform",transformation);
+		}else {
+			transform.setValue(transform.getValue() +" "+ transformation);
 		}
 	}
 }

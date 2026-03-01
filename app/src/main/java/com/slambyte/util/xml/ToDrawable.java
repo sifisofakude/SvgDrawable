@@ -13,7 +13,7 @@ public class ToDrawable	{
 	Document document;
 	ArrayList gradients = new ArrayList<Element>();
 
-	public ToDrawable(Document document,String input, String output)	{
+	public ToDrawable(Document document,String input)	{
 		this.document = document;
 		
 		try	{
@@ -78,6 +78,10 @@ public class ToDrawable	{
 
 			case "polyline":
 				element = new Element("polyline");
+				break;
+
+			case "polyline":
+				element = new Element("line");
 				break;
 
 			case "stop":

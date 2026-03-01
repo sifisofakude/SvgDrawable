@@ -30,12 +30,12 @@ public class Parser	{
 		}
 
 		if(extension.equals("svg"))	{
-			new ToDrawable(doc,input,output);
+			new ToDrawable(doc,input);
 		}else {
-			new ToSvg(doc,input,output);
+			new ToSvg(doc,input);
 		}
 
-		doc.printFormatted(doc.rootElement,0);
+		writeToFile(output);
 	}
 
 	public boolean writeToFile(String path)	{
